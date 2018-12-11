@@ -5,8 +5,7 @@
 # the repo. Unless a later match takes precedence,
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
-*       @mviniciuscoimbra @viniciuskawakami @alexconnect @Vermelh0 @falmeida9 @baraodev @robsonarruda1 @cezar-maruca @leonardoconnectcom @EduardoMOliveira @jmangueira 
-
+*       @mviniciuscoimbra @viniciuskawakami @alexconnect
 # Order is important; the last matching pattern takes the most
 # precedence. When someone opens a pull request that only
 # modifies JS files, only @js-owner and not the global
