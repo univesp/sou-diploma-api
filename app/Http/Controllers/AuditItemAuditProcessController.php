@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AuditItemAuditProcesseController extends Controller
+class AuditItemAuditProcessController extends Controller
 {
     /**
      * Display a listing of the resource.
