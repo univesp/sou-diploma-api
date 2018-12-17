@@ -6,28 +6,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditDocumentType extends Model
 {
+    // Protected table name
     protected $table = 'document_types';
 
-    protected $fillable = [
-        'id', 'name'
+    // Protected fillable or inserts
+    protected $fillable = [ 
+        'name'
     ];
 
-    protected $sorted = [
-        'id', 'name'
+    // Protected define order
+    protected $sorted = [ 
+        'name'
     ];
 
+    // Protected guard
     protected $guarded = [
         'id', 
         'created_at', 
         'update_at'
     ];
 
+    // Protected hidden fields
     protected $hidden = [
         'id', 
         'created_at', 
         'update_at'
     ];
 
+    // Relationships
     public function auditDocuments()
     {
         return $this->hasMany(AuditDocument::class);

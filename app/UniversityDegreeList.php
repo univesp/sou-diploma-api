@@ -4,19 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditPrintType extends Model
+class UniversityDegreeList extends Model
 {
     // Protected table name
-    protected $table = 'print_types';
+    protected $table = 'university_degree_lists';
 
-    // Protected fillable or inserts
+    // Protected fillable or insert
     protected $fillable = [
-        'name'
+        'student_id', 
+        'status'
     ];
 
     // Protected define order
     protected $sorted = [
-        'name'
+        'student_id', 
+        'status'
     ];
 
     // Protected guard
@@ -25,17 +27,11 @@ class AuditPrintType extends Model
         'created_at', 
         'update_at'
     ];
-
+    
     // Protected hidden fields
     protected $hidden = [
         'id', 
         'created_at', 
         'update_at'
     ];
-
-    // Relationships
-    public function auditUniversityDegreePrints()
-    {
-        return $this->hasMany(AuditUniversityDegreePrint::class);
-    }
 }

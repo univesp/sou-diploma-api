@@ -4,29 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditItemAuditProcess extends Model
+class UniversityDegreePrintResponsible extends Model
 {
     // Protected table name
-    protected $table = 'item_audit_processes';
+    protected $table = 'university_degree_print_responsibles';
 
-    // Protected fillable or inserts
-    protected $fillable = [ 
-        'audit_process_id', 
+    // Protected fillable or insert
+    protected $fillable = [
         'user_id', 
-        'field_name', 
-        'before', 
-        'after', 
-        'inconsistency'
+        'university_degree_print_id', 
+        'status'
     ];
 
     // Protected define order
     protected $sorted = [
-        'audit_process_id', 
         'user_id', 
-        'field_name', 
-        'before', 
-        'after', 
-        'inconsistency'
+        'university_degree_print_id', 
+        'status'
     ];
 
     // Protected guard
@@ -44,9 +38,8 @@ class AuditItemAuditProcess extends Model
     ];
 
     // Relationships
-    public function auditProccess()
+    public function auditUniversityDegreePrint()
     {
-        return $this->belongsTo(AuditProcess::class);
+        return $this->belongsTo(AuditUniversityDegreePrint::class);
     }
-
 }
