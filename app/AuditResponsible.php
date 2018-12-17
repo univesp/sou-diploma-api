@@ -17,15 +17,19 @@ class AuditResponsible extends Model
     ];
 
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function auditProcesses()
+    public function auditProcess()
     {
-        return $this->hasMany(AuditProcess::class);
+        return $this->belongsTo(AuditProcess::class);
     }
 }

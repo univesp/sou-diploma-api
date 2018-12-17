@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditItemAuditProcesse extends Model
+class AuditItemAuditProcess extends Model
 {
     protected $table = 'item_audit_processes';
 
@@ -17,16 +17,20 @@ class AuditItemAuditProcesse extends Model
     ];
 
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function auditProccesses()
+    public function auditProccess()
     {
-        return $this->hasMany(AuditProcess::class);
+        return $this->belongsTo(AuditProcess::class);
     }
 
 }
