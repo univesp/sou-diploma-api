@@ -17,15 +17,19 @@ class AuditDocumentType extends Model
     ];
 
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function audit_documents()
+    public function auditDocuments()
     {
-        return $this->belongsTo(AuditDocument::class);
+        return $this->hasMany(AuditDocument::class);
     }
 }

@@ -17,15 +17,39 @@ class AuditProcess extends Model
     ];
 
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function auditTypes()
+    public function auditResponsibles()
     {
-        return $this->hasMany(AuditType::class);
+        return $this->hasMany(AuditResponsible::class);
+    }
+
+    public function auditType()
+    {
+        return $this->belongsTo(AuditType::class);
+    }
+
+    public function itemAuditProcesses()
+    {
+        return $this->hasMany(ItemAuditProcesses::class);
+    }
+
+    public function auditDocuments()
+    {
+        return $this->hasMany(AuditDocument::class);
+    }
+
+    public function auditUniversityDegreePrints()
+    {
+        return $this->hasMany(AuditUniversityDegreePrint::class);
     }
 }

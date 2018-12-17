@@ -17,15 +17,19 @@ class AuditPrintType extends Model
     ];
 
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function universityDegreePrints()
+    public function auditUniversityDegreePrints()
     {
-        return $this->belongsTo(AuditUniversityDegreePrint::class);
+        return $this->hasMany(AuditUniversityDegreePrint::class);
     }
 }
