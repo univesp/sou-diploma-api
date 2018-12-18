@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrintType extends Model
 {
+    // Protected connection
+    protected $connection = 'mysql';
+    
     // Protected table name
     protected $table = 'print_types';
 

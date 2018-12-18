@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditDocument extends Model
 {
+    // Protected connection
+    protected $connection = 'mysql';
+
     // Protected table name
     protected $table = 'audit_documents';
 
