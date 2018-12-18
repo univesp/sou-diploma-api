@@ -6,26 +6,42 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditResponsible extends Model
 {
+    // Protected table name
     protected $table = 'audit_responsibles';
 
+    // Protected fillable or insert
     protected $fillable = [
-        'id', 'audit_process_id', 'user_id', 'status', 'atributed_date'
+        'audit_process_id', 
+        'user_id', 
+        'status', 
+        'atributed_date'
     ];
 
+    // Protected define order
     protected $sorted = [
-        'id', 'audit_process_id', 'user_id', 'status', 'atributed_date'
+        'audit_process_id', 
+        'user_id', 
+        'status', 
+        'atributed_date'
     ];
 
+    // Protected guard
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
+    // Protected hidden fields
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function auditProcesses()
+    // Relationships
+    public function auditProcess()
     {
-        return $this->hasMany(AuditProcess::class);
+        return $this->belongsTo(AuditProcess::class);
     }
 }

@@ -4,25 +4,29 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditDocument extends Model
+class AuditItemAuditProcess extends Model
 {
     // Protected table name
-    protected $table = 'audit_documents';
+    protected $table = 'item_audit_processes';
 
     // Protected fillable or inserts
-    protected $fillable = [
+    protected $fillable = [ 
         'audit_process_id', 
-        'document_type_id', 
-        'autenticate', 
-        'attachment'
+        'user_id', 
+        'field_name', 
+        'before', 
+        'after', 
+        'inconsistency'
     ];
-    
+
     // Protected define order
     protected $sorted = [
         'audit_process_id', 
-        'document_type_id', 
-        'autenticate', 
-        'attachment'
+        'user_id', 
+        'field_name', 
+        'before', 
+        'after', 
+        'inconsistency'
     ];
 
     // Protected guard
@@ -40,14 +44,9 @@ class AuditDocument extends Model
     ];
 
     // Relationships
-    public function auditProcess()
+    public function auditProccess()
     {
         return $this->belongsTo(AuditProcess::class);
     }
 
-    public function documentType()
-    {
-        return $this->belongsTo(DocumentType::class);
-    }
-    
 }

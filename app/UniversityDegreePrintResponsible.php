@@ -4,19 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditPrintType extends Model
+class UniversityDegreePrintResponsible extends Model
 {
     // Protected table name
-    protected $table = 'print_types';
+    protected $table = 'university_degree_print_responsibles';
 
-    // Protected fillable or inserts
+    // Protected fillable or insert
     protected $fillable = [
-        'name'
+        'user_id', 
+        'university_degree_print_id', 
+        'status'
     ];
 
     // Protected define order
     protected $sorted = [
-        'name'
+        'user_id', 
+        'university_degree_print_id', 
+        'status'
     ];
 
     // Protected guard
@@ -34,8 +38,8 @@ class AuditPrintType extends Model
     ];
 
     // Relationships
-    public function auditUniversityDegreePrints()
+    public function auditUniversityDegreePrint()
     {
-        return $this->hasMany(AuditUniversityDegreePrint::class);
+        return $this->belongsTo(AuditUniversityDegreePrint::class);
     }
 }

@@ -6,26 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditType extends Model
 {
+    // Protected table name
     protected $table = 'audit_types';
 
+    // Protected fillable or insert
     protected $fillable = [
-        'id', 'name'
+        'name'
     ];
 
+    // Protected define order
     protected $sorted = [
-        'id', 'name'
+        'name'
     ];
 
+    // Protected guard
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
+    // Protected hidden fields
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
+    // Relationships
     public function auditProcesses()
     {
-        return $this->belongsTo(AuditProcess::class);
+        return $this->hasMany(AuditProcess::class);
     }
 }

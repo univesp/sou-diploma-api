@@ -6,31 +6,63 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditUniversityDegreePrint extends Model
 {
-    protected $table = 'univesty_degree_prints';
+    // Protected table name
+    protected $table = 'university_degree_prints';
 
+    // Protected fillable or insert
     protected $fillable = [
-        'id', 'audit_process_id', 'user_id', 'print_type_id', 'university_degree_number', 'label'
+        'audit_process_id', 
+        'user_id', 
+        'print_type_id', 
+        'university_degree_number', 
+        'label', 
+        'serial_number', 
+        'status'
     ];
 
+    // Protected define order
     protected $sorted = [
-        'id', 'audit_process_id', 'user_id', 'print_type_id', 'university_degree_number', 'label'
+        'audit_process_id', 
+        'user_id', 
+        'print_type_id', 
+        'university_degree_number', 
+        'label', 
+        'serial_number', 
+        'status'
     ];
 
+    // Protected guard
     protected $guarded = [
-        'create_at', 'update_at'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
+    // Protected hidden fields
     protected $hidden = [
-        'id'
+        'id', 
+        'created_at', 
+        'update_at'
     ];
 
-    public function auditProcesses()
+    // Relationships
+    public function auditProcess()
     {
-        return $this->hasMany(AuditProcess::class);
+        return $this->belongsTo(AuditProcess::class);
     }
     
-    public function print_types()
+    public function auditPrintType()
     {
-        return $this->hasMany(AuditPrintType::class);
+        return $this->belongsTo(AuditPrintType::class);
+    }
+
+    public function universityDegreePrintResponsibles()
+    {
+        return $this->hasMany(UniversityDegreePrintResponsible::class);
+    }
+
+    public function universityDegreePrintErrors()
+    {
+        return $this->hasMany(UniversityDegreePrintError::class);
     }
 }
