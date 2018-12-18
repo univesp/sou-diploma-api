@@ -44,7 +44,7 @@ class ItemAuditProcess extends Model
     ];
 
     // Relationships
-    public function auditProccess()
+    public function auditProcess()
     {
         return $this->belongsTo(AuditProcess::class);
     }
