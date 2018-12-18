@@ -68,9 +68,9 @@ class AuditProcess extends Model
         return $this->belongsTo(AuditType::class);
     }
 
-    public function auditItemAuditProcesses()
+    public function itemAuditProcesses()
     {
-        return $this->hasMany(AuditItemAuditProcesses::class);
+        return $this->hasMany(ItemAuditProcess::class);
     }
 
     public function auditDocuments()
@@ -78,8 +78,8 @@ class AuditProcess extends Model
         return $this->hasMany(AuditDocument::class);
     }
 
-    public function auditUniversityDegreePrints()
+    public function universityDegreePrints()
     {
-        return $this->hasMany(AuditUniversityDegreePrint::class);
+        return $this->hasMany(UniversityDegreePrint::class);
     }
 }

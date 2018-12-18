@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditUniversityDegreePrint extends Model
+class UniversityDegreePrint extends Model
 {
     // Protected table name
     protected $table = 'university_degree_prints';
@@ -51,9 +51,9 @@ class AuditUniversityDegreePrint extends Model
         return $this->belongsTo(AuditProcess::class);
     }
     
-    public function auditPrintType()
+    public function printType()
     {
-        return $this->belongsTo(AuditPrintType::class);
+        return $this->belongsTo(PrintType::class);
     }
 
     public function universityDegreePrintResponsibles()
