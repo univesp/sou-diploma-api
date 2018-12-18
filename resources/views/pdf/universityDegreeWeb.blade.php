@@ -1,9 +1,4 @@
-@php
-DEFINE('PATH', __DIR__);
-DEFINE('DS', DIRECTORY_SEPARATOR); 
-$path = PATH. "".DS;
-$path = "{$path}images". DS;
-@endphp 
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,15 +19,11 @@ $path = "{$path}images". DS;
         .right{
             float: right;
         }
-
-        .sublinhado {
-            border-top: solid 1px #000;
-        }
     </style>
     </head>
     <body style="margin-top:-60px;">
-        <div width="100%"><img id="head" src="{{ $path }}Diploma.png">
-            <div class="text-center" style="margin-top:200px;">
+        <div width="100%"><img id="head" src="{{ asset('images/Diploma.png') }}">
+            <div class="text-center" style="margin-top:-670px;">
                 <p style="margin-left:120px;">A presidente da <b>Universidade Virtual do Estado de São Paulo,</b><br/>
                     no uso de suas atribuições, confere a</p>
             </div>
@@ -49,11 +40,11 @@ $path = "{$path}images". DS;
                     Áreas de Matemática, Ciências Naturias e Humanas</h3></b>
                     <p style="margin-top:-5px;">concluído em XXXXXX de XXXX<br/>
                     para que possa gozar dos direitos e prerrogativas legais,</p><br/>
-                    <p style="margin-top:10px;"> São Paulo, XX de XXXXXX de XXXX.</p> 
+                    <p style="margin-top:80px;"> São Paulo, XX de XXXXXX de XXXX.</p> 
                
-            <div style="margin-top:50px;">  
-                <div class="left sublinhado" style="margin-left:60px;">Patricia Laczynski de Souza<br/>Diretora Acadêmica</div>
-                <div style="margin-right:200px;" class="sublinhado">Fernanda Adelaide Gouveia<br/>Presidente</div>
+            <div style="margin-top:70px;">  
+                <div class="left" style="margin-left:90px;"><span class="sublinhado">Patricia Laczynski de Souza</span><br/>Diretora Acadêmica</div>
+                <div style="margin-right:200px;"><span class="sublinhado">Fernanda Adelaide Gouveia</span><br/>Presidente</div>
                 <div style="clear:both"></div>
                 <div class="right sublinhado">Diplomado(a)</div>       
             </div>
@@ -64,7 +55,8 @@ $path = "{$path}images". DS;
             .bordas {
                 border: solid 1px #000;
                 width: 500px;
-                margin-top: 130px;
+                margin-left:35%;
+                margin-top: 250px;
             }
             .negrito {
                 font-weight: bold;
@@ -90,10 +82,11 @@ $path = "{$path}images". DS;
             }
             .margin{
                 margin-left: 30px;
+                
             }
-
-            
-
+            .sublinhado {
+                border-top: solid 1px #000;
+            }
         </style>
         <div class="bordas left">
             <p class="negrito p text-center size">UNIVERSIDADE VIRTUAL DO ESTADO DE SÃO PAULO - UNIVESP</p>
@@ -104,7 +97,7 @@ $path = "{$path}images". DS;
             <p class="p">processo n° 2017.2.0001.02</p>
             <p class="margin-bottom p">nos termos do artigo 48 da lei 9.394, de 20/12/1996.</p>
             <br/>
-            <p class="p"> São Paulo, 5 de dezembro de 2017</p>
+            <p class="p" > São Paulo, 5 de dezembro de 2017</p>
             </div>
             
             <br/>
