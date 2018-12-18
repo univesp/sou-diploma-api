@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditProcess extends Model
 {
+    // Protected connection
+    protected $connection = 'mysql';
+    
     // Protected table name
     protected $table = 'audit_processes';
 

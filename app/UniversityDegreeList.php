@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UniversityDegreeList extends Model
 {
+    // Protected connection
+    protected $connection = 'mysql';
+    
     // Protected table name
     protected $table = 'university_degree_lists';
 
