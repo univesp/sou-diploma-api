@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditPrintType extends Model
+class PrintType extends Model
 {
     // Protected table name
     protected $table = 'print_types';
@@ -34,8 +34,8 @@ class AuditPrintType extends Model
     ];
 
     // Relationships
-    public function auditUniversityDegreePrints()
+    public function universityDegreePrints()
     {
-        return $this->hasMany(AuditUniversityDegreePrint::class);
+        return $this->hasMany(UniversityDegreePrint::class);
     }
 }
