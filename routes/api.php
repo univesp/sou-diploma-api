@@ -16,3 +16,5 @@ Route::resources([
     'type' => 'AuditTypeController',
     'university' => 'AuditUniversityDegreePrintController',
 ]);
+
+Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
