@@ -66,11 +66,22 @@ class AuditUniversityDegreePrintController extends Controller
     public function ReportPdf() 
     {
         $universityDegree = [];
-
-        //return view('pdf.universityDegree', compact('universityDegree'));
-
+        
         $pdf = PDF::loadView('pdf.universityDegree', ['universityDegree' => $universityDegree])->setPaper('a4', 'landscape');
 
         return $pdf->download('Diploma - ' . Carbon::now()->format('H:i:s d-m-Y') . '.pdf');
+    }
+    
+    public function getPdf() 
+    {
+        $universityDegree = [];
+        return view('pdf.universityDegree', compact('universityDegree'));
+    }
+
+    public function universityDegreeWeb()
+    {
+        $universityDegreeWeb = array();
+
+        return view('pdf.universityDegreeWeb', compact('universityDegreeWeb'));
     }
 }
