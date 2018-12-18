@@ -38,8 +38,8 @@ class UniversityDegreePrintResponsible extends Model
     ];
 
     // Relationships
-    public function auditUniversityDegreePrint()
+    public function universityDegreePrint()
     {
-        return $this->belongsTo(AuditUniversityDegreePrint::class);
+        return $this->belongsTo(UniversityDegreePrint::class);
     }
 }
