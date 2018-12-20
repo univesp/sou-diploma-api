@@ -71,11 +71,4 @@ class AuditUniversityDegreePrintController extends Controller
 
         return $pdf->download('Diploma - ' . Carbon::now()->format('H:i:s d-m-Y') . '.pdf');
     }
-
-    public function universityDegreeWeb()
-    {
-        $universityDegreeWeb = array();
-
-        return view('pdf.universityDegreeWeb', compact('universityDegreeWeb'));
-    }
 }
