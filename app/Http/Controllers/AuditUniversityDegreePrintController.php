@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class AuditUniversityDegreePrintController extends Controller
@@ -65,6 +66,13 @@ class AuditUniversityDegreePrintController extends Controller
 
     public function ReportPdf() 
     {
+
+        $student_id = 65537;
+
+        //$data = DB::connection('mysql_sa')->table('v_impressao_diploma')->where('student_id',$student_id)->get();
+        
+        //dd($data);
+
         $universityDegree = [];
         
         $pdf = PDF::loadView('pdf.universityDegree', ['universityDegree' => $universityDegree])->setPaper('a4', 'landscape');
