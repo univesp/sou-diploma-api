@@ -1,25 +1,27 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentType extends Model
+class UniversityDegreeList extends Model
 {
     // Protected connection
     protected $connection = 'mysql';
     
     // Protected table name
-    protected $table = 'document_types';
+    protected $table = 'university_degree_lists';
 
-    // Protected fillable or inserts
-    protected $fillable = [ 
-        'name'
+    // Protected fillable or insert
+    protected $fillable = [
+        'student_id', 
+        'status'
     ];
 
     // Protected define order
-    protected $sorted = [ 
-        'name'
+    protected $sorted = [
+        'student_id', 
+        'status'
     ];
 
     // Protected guard
@@ -28,17 +30,11 @@ class DocumentType extends Model
         'created_at', 
         'update_at'
     ];
-
+    
     // Protected hidden fields
     protected $hidden = [
         'id', 
         'created_at', 
         'update_at'
     ];
-
-    // Relationships
-    public function auditDocuments()
-    {
-        return $this->hasMany(AuditDocument::class);
-    }
 }
