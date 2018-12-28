@@ -1,25 +1,29 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PrintType extends Model
+class UniversityDegreePrintError extends Model
 {
     // Protected connection
     protected $connection = 'mysql';
     
     // Protected table name
-    protected $table = 'print_types';
+    protected $table = 'university_degree_print_errors';
 
-    // Protected fillable or inserts
+    // Protected fillable or insert
     protected $fillable = [
-        'name'
+        'university_degree_print_id', 
+        'serial_number', 
+        'reason'
     ];
 
     // Protected define order
     protected $sorted = [
-        'name'
+        'university_degree_print_id', 
+        'serial_number', 
+        'reason'
     ];
 
     // Protected guard
@@ -37,8 +41,8 @@ class PrintType extends Model
     ];
 
     // Relationships
-    public function universityDegreePrints()
+    public function universityDegreePrint()
     {
-        return $this->hasMany(UniversityDegreePrint::class);
+        return $this->belongsTo(UniversityDegreePrint::class);
     }
 }
