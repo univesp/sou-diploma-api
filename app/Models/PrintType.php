@@ -1,35 +1,25 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ItemAuditProcess extends Model
+class PrintType extends Model
 {
     // Protected connection
     protected $connection = 'mysql';
     
     // Protected table name
-    protected $table = 'item_audit_processes';
+    protected $table = 'print_types';
 
     // Protected fillable or inserts
-    protected $fillable = [ 
-        'audit_process_id', 
-        'user_id', 
-        'field_name', 
-        'before', 
-        'after', 
-        'inconsistency'
+    protected $fillable = [
+        'name'
     ];
 
     // Protected define order
     protected $sorted = [
-        'audit_process_id', 
-        'user_id', 
-        'field_name', 
-        'before', 
-        'after', 
-        'inconsistency'
+        'name'
     ];
 
     // Protected guard
@@ -47,9 +37,8 @@ class ItemAuditProcess extends Model
     ];
 
     // Relationships
-    public function auditProcess()
+    public function universityDegreePrints()
     {
-        return $this->belongsTo(AuditProcess::class);
+        return $this->hasMany(UniversityDegreePrint::class);
     }
-
 }
