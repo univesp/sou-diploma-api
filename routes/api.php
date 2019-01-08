@@ -15,8 +15,10 @@ Route::resources([
     'responsible' => 'AuditResponsibleController',
     'type' => 'AuditTypeController',
     'university' => 'AuditUniversityDegreePrintController',
-    'registration' => 'UniversityDegreeInformationController',
+    'registration' => 'UniversityDegreeInformationController'
 ]);
+
+Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
 
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 Route::get('registration-index', 'UniversityDegreeInformationController@index');

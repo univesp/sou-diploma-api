@@ -60,4 +60,9 @@ class AuditResponsibleController extends Controller
     {
         //
     }
+
+    public function responsibleProcess(Request $request)
+    {
+        var_dump($request->name);
+    }
 }
