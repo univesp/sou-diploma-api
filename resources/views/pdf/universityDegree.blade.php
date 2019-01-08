@@ -8,7 +8,7 @@ $path = "{$path}images". DS;
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Título Opcional</title>
+    <title>DIPLOMADO</title>
     <style>
         #head{
             margin-top: 100%;
@@ -27,6 +27,7 @@ $path = "{$path}images". DS;
 
         .sublinhado {
             border-top: solid 1px #000;
+            width: 100px;
         }
     </style>
     </head>
@@ -37,29 +38,28 @@ $path = "{$path}images". DS;
                     no uso de suas atribuições, confere a</p>
             </div>
             <div class="text-center" style="margin-top:10px;">
-                <h2 style="color:red;margin-left:130px;">NOME DO DIPLOMADO</h2>
+            <h2 style="color:red;margin-left:130px;">{{ $universityDegree->name }}</h2>
             </div>
             <div class="text-center" style="margin-top:10px;margin-left:120px;">
                 de nacionalidade brasileira,<br/>
-                portador da cédula de identidade RG XX.XXX.XXX-X SP,<br/>
-                nascido em XX, XXXXXX de XXXX,<br/>
-                e natural do Estado de São Paulo,<br/>
+                portador da cédula de identidade RG {{ $universityDegree->RG }} {{ $universityDegree->orgao_emissor }},<br/>
+                nascido em {{ $universityDegree->day }}, {{ $universityDegree->mouth }} de {{ $universityDegree->year }},<br/>
+                e natural do Estado de {{ $universityDegree->naturalidade }},<br/>
                 o diploma do
-                <b><h3>Curso Sequencial de Fundamentos da Docência nas<br/>
-                    Áreas de Matemática, Ciências Naturias e Humanas</h3></b>
-                    <p style="margin-top:-5px;">concluído em XXXXXX de XXXX<br/>
+                <b><h3>Curso {{ $universityDegree->course_name }}</h3></b>
+            <p style="margin-top:-5px;">concluído em {{ $universityDegree->conclusion_mouth }} de {{ $universityDegree->conclusion_year }}<br/>
                     para que possa gozar dos direitos e prerrogativas legais,</p><br/>
-                    <p style="margin-top:10px;"> São Paulo, XX de XXXXXX de XXXX.</p> 
+                    <p style="margin-top:10px;"> São Paulo, {{ \Carbon\Carbon::now()->day }} de {{ \Carbon\Carbon::now()->month }} de {{ \Carbon\Carbon::now()->year }}.</p> 
                
-            <div style="margin-top:50px;">  
-                <div class="left sublinhado" style="margin-left:60px;">Patricia Laczynski de Souza<br/>Diretora Acadêmica</div>
-                <div style="margin-right:200px;" class="sublinhado">Fernanda Adelaide Gouveia<br/>Presidente</div>
-                <div style="clear:both"></div>
-                <div class="right sublinhado">Diplomado(a)</div>       
+            <div style="margin-top:50px;">
+                <hr class="left" style="margin-left:60px;"/>  
+                <div class="left" style="margin-left:60px;"><span class="sublinhado">Patricia Laczynski de Souza</span><br/>Diretora Acadêmica</div>
+                
+                <div style="margin-right:200px;"><span class="sublinhado">Fernanda Adelaide Gouveia</span><br/>Presidente</div>
+                <div class="right " style="margin-top:-50px;"><span class="sublinhado">Diplomado(a)</span></div>
             </div>
-            
         </div>
-       
+
         <style>
             .bordas {
                 border: solid 1px #000;
@@ -77,6 +77,7 @@ $path = "{$path}images". DS;
             }
             .right{
             margin-right: 10%;
+            margin-top: 20%;
             }
             .size{
                 font-size: 14px;
@@ -92,19 +93,22 @@ $path = "{$path}images". DS;
                 margin-left: 30px;
             }
 
-            
+            .sublinhado {
+                margin-bottom: border 1px #000;
+            }
 
         </style>
         <div class="bordas left">
             <p class="negrito p text-center size">UNIVERSIDADE VIRTUAL DO ESTADO DE SÃO PAULO - UNIVESP</p>
             <div class="margin">
             <p class="margin-bottom p">Secretaria de Registro Acadêmico - SR</p><br/>
-            <p class="p">Diploma registrado sob n° 13072501202200001</p>
-            <p class="p">rótulo n° GR.L.LB.000001.2018.1ª Via.00001</p>
-            <p class="p">processo n° 2017.2.0001.02</p>
+            <p class="p">Diploma registrado sob n° {{ $universityDegree->numero_diploma }}</p>
+            <p class="p">rótulo n° {{ $universityDegree->numero_rotulo }}</p>
+
+            <p class="p">processo n° {{ $universityDegree->numero_processo }}</p>
             <p class="margin-bottom p">nos termos do artigo 48 da lei 9.394, de 20/12/1996.</p>
             <br/>
-            <p class="p"> São Paulo, 5 de dezembro de 2017</p>
+            <p class="p"> São Paulo, {{ \Carbon\Carbon::now()->day }} de {{ \Carbon\Carbon::now()->month }} de {{ \Carbon\Carbon::now()->year }}.</p>
             </div>
             
             <br/>
