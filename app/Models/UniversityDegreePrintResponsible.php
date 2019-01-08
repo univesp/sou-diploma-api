@@ -1,29 +1,29 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UniversityDegreePrintError extends Model
+class UniversityDegreePrintResponsible extends Model
 {
     // Protected connection
     protected $connection = 'mysql';
     
     // Protected table name
-    protected $table = 'university_degree_print_errors';
+    protected $table = 'university_degree_print_responsibles';
 
     // Protected fillable or insert
     protected $fillable = [
+        'user_id', 
         'university_degree_print_id', 
-        'serial_number', 
-        'reason'
+        'status'
     ];
 
     // Protected define order
     protected $sorted = [
+        'user_id', 
         'university_degree_print_id', 
-        'serial_number', 
-        'reason'
+        'status'
     ];
 
     // Protected guard

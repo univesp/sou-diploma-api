@@ -1,31 +1,31 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuditResponsible extends Model
+class AuditDocument extends Model
 {
     // Protected connection
     protected $connection = 'mysql';
-    
-    // Protected table name
-    protected $table = 'audit_responsibles';
 
-    // Protected fillable or insert
+    // Protected table name
+    protected $table = 'audit_documents';
+
+    // Protected fillable or inserts
     protected $fillable = [
         'audit_process_id', 
-        'user_id', 
-        'status', 
-        'atributed_date'
+        'document_type_id', 
+        'autenticate', 
+        'attachment'
     ];
-
+    
     // Protected define order
     protected $sorted = [
         'audit_process_id', 
-        'user_id', 
-        'status', 
-        'atributed_date'
+        'document_type_id', 
+        'autenticate', 
+        'attachment'
     ];
 
     // Protected guard
@@ -47,4 +47,10 @@ class AuditResponsible extends Model
     {
         return $this->belongsTo(AuditProcess::class);
     }
+
+    public function documentType()
+    {
+        return $this->belongsTo(DocumentType::class);
+    }
+    
 }
