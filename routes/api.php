@@ -16,3 +16,5 @@ Route::resources([
     'type' => 'AuditTypeController',
     'university' => 'AuditUniversityDegreePrintController',
 ]);
+
+Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
