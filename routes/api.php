@@ -26,7 +26,7 @@ Route::resources([
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
 
 //Route to  save and update print degree status
-Route::post('print-status', 'AuditUniversityDegreePrintController@printStatus');
+Route::patch('print-status', 'PrintListTempController@printStatus');
 
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 
