@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models_authentication\Address;
-use App\Models_authentication\Student;
-use App\Models_Authentication\Identity;
-use App\Models_Authentication\IdentityType;
+use App\ModelsAuthentication\Student;
+use App\ModelsAuthentication\Identity;
+use App\ModelsAuthentication\IdentityType;
 
 class IdentityController extends Controller
 {
@@ -40,7 +39,6 @@ class IdentityController extends Controller
     public function show($id)
     {
         return $identity = Identity::find($id);
-        //return $identityType = IdentityType::find($identity->identity_type_id); 
     }
 
     /**
@@ -50,14 +48,23 @@ class IdentityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     //esse updade precisa do id do identity
     public function update(Request $request, $id)
     {
         $identity = Identity::find($id);
+
         $identityType = IdentityType::find($identity->identity_type_id);
+        
         if($identity){
         $identity->update($request->all());
-        }
+
+        $return = ['data' => ['msg' => 'documento atualizado com sucesso!']]; 
+
+        return response()->json($return);
+        }else{
+            return response()->json('Houve um erro ao realizar operação de atualizar');
+        }    
     }
 
     /**
