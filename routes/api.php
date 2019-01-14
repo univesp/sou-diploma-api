@@ -19,9 +19,11 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    'parentages' => 'ParentageController'
+    //'parentages' => 'ParentageController'
 ]);
 
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 
+//essa rota precisa do tipo 1 mãe , 2 pai 
+Route::put('parentages/{id}/{type}','ParentageController@update');

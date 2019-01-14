@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models_Authentication\Parentage;
-use App\Models_Authentication\Student;
-use App\Models_Authentication\Parentage_types;
+use App\ModelsAuthentication\Parentage;
+use App\ModelsAuthentication\Student;
+use App\ModelsAuthentication\ParentageType;
 
 class ParentageController extends Controller
 {
@@ -50,23 +50,23 @@ class ParentageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    // e necessario passar parâmetro com tipo se for 1 e atualiza a mae se for 2 o pai.
+    public function update(Request $request, $id, $type)
     {
-        //$parentage = Parentage::find($id);
-        //dd($parentage);
-        // $parentagetyType = Parentage_types::find($parentage->parentage_type_id, 1);
-        // return $parentagetyType;
-        $student = Student::find($id);
+        $students = Student::find($id);
         
-        foreach ($student->parentages as $parentage) {
-            if($parentage->parentage_type_id == 1){
+        foreach ($students->parentages as $parentage) {
+
+                if($parentage->parentage_type_id == $type){
+                    
                 $parentage->update($request->all());
-            }else{
-                
-            }
+
+                $return = ['data' => ['msg' => 'Nome atualizado com sucesso!']]; 
+
+                return response()->json($return);
+                } 
         }
-    
-        // $student->parentages()->sync($student->parentages);
+        
     }
 
     /**
