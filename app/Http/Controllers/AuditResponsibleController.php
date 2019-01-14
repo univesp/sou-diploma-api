@@ -2,10 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditProcess;
+use App\Models\AuditResponsible;
 use Illuminate\Http\Request;
 
 class AuditResponsibleController extends Controller
 {
+    public function responsibleProcess(Request $request)
+    {
+        $studentId = AuditProcess::where('student_id',$request->student_id)->first();
+
+        if (!empty($studentId)){
+            $auditHistory  = AuditProcess::where('student_id', $request->student_id)->first();
+
+            AuditResponsible::create([
+                'audit_process_id' => $auditHistory->id,
+                'user_id' => $auditHistory->user_id,
+                'status' => $auditHistory->status,
+                'attributed_date' => date('Y-m-d H:i:s', strtotime($auditHistory->attributed_date))
+            ]);
+
+            $updateProccess = AuditProcess::find($studentId->id);
+            $updateProccess->user_id = $request->id;
+            $updateProccess->student_id = $request->student_id;
+            $updateProccess->audit_type_id = 3;
+            $updateProccess->status = "EM ANDAMENTO";
+            $updateProccess->attributed_date = date('Y-m-d H:i:s');
+            $updateProccess->save();
+
+        }else{
+            $auditProcess = new AuditProcess();
+            $auditProcess->user_id = $request->id;
+            $auditProcess->student_id = $request->student_id;
+            $auditProcess->audit_type_id = 3;
+            $auditProcess->status = "EM ANDAMENTO";
+            $auditProcess->attributed_date = date('Y-m-d H:i:s');
+            $auditProcess->save();
+        }
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +83,9 @@ class AuditResponsibleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id = $request->id;
+        $auditProccessUpdate = AuditProcess::find($request->id);
+
     }
 
     /**

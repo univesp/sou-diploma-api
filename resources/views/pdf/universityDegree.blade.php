@@ -56,9 +56,8 @@ $path = "{$path}images". DS;
                 <div class="left" style="margin-left:60px;"><span class="sublinhado">Patricia Laczynski de Souza</span><br/>Diretora Acadêmica</div>
                 
                 <div style="margin-right:200px;"><span class="sublinhado">Fernanda Adelaide Gouveia</span><br/>Presidente</div>
-                <div style="clear:both"></div>
-                <div class="right "><span class="sublinhado">Diplomado(a)</span></div>       
-            </div>            
+                <div class="right " style="margin-top:-50px;"><span class="sublinhado">Diplomado(a)</span></div>
+            </div>
         </div>
 
         <style>
@@ -97,8 +96,6 @@ $path = "{$path}images". DS;
             .sublinhado {
                 margin-bottom: border 1px #000;
             }
-
-            
 
         </style>
         <div class="bordas left">
