@@ -17,13 +17,14 @@ class PrintListTempController extends Controller
 //        $printStatus->status_impress = 1;
 //        $printStatus->save();
 
-        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
+//        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
+        
+        $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
         foreach ($printStatus as $print){
             $print->status_impress = 1;
+            $printStatus->save();
         }
-
-        $printStatus->save();
 
 //        if ($printStatus) {
 //            return response()->json([
