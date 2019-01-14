@@ -22,6 +22,11 @@ Route::resources([
     'parentages' => 'ParentageController'
 ]);
 
+//Route to save and update dtaa to sou_audit / audit_proccess
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
+
+//Route to  save and update print degree status
+Route::post('print-status', 'AuditUniversityDegreePrintController@printStatus');
+
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 

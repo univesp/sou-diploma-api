@@ -150,4 +150,10 @@ class AuditUniversityDegreePrintController extends Controller
 
         return $mouth;
     }
+
+    public function printStatus(Request $request)
+    {
+        //dd($request);
+        echo "OK!";
+    }
 }
