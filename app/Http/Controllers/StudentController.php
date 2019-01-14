@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models_authentication\Student;
+use App\ModelsAuthentication\Student;
 use App\Erros;
 
 class StudentController extends Controller
@@ -38,7 +38,8 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $students = Student::find($id);
+        return response()->json($students);
     }
 
     /**
@@ -50,16 +51,19 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {       
-        try {
-            $students = Student::find($id);
+        $students = Student::find($id);
+
+        if($students){
+
             $students->update($request->all()); 
+
             $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']]; 
+
             return response()->json($return);
-        } catch (\Exception $e) {
+
+        }else{
             return response()->json('Houve um erro ao realizar operação de atualizar');
-        }
-           
-            
+        }      
     }
 
     /**

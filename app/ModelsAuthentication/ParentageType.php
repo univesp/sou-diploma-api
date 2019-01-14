@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models_Authentication;
+namespace App\ModelsAuthentication;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Parentage_types extends Model
+class ParentageType extends Model
 {
     // protected $connection = 'mysql_sa';
 

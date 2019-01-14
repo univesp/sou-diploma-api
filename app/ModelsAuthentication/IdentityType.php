@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models_Authentication;
+namespace App\ModelsAuthentication;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,8 +12,7 @@ class IdentityType extends Model
     
     public function identities()
     {
-        return $this->belongsToMany(Identity::class, 'student_x_identify')->withTimestamps();
-        //return $this->hasMany(Identity::class);
+        return $this->belongsToMany(Identity::class)->withTimestamps();
     }
 
 }

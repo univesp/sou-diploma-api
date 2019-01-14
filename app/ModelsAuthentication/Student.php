@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models_Authentication;
+namespace App\ModelsAuthentication;
 
 use Illuminate\Database\Eloquent\Model;
-use Faker\Provider\fa_IR\Address;
+
 
 class Student extends Model
 {
@@ -13,8 +13,7 @@ class Student extends Model
 
     public function identities()
     {
-        return $this->belongsToMany(Identity::class, 'student_x_identify', 'identity_id', 'student_id')->withTimestamps();
-        //return $this->belongsToMany(Identity::class,'student_x_identify');
+        return $this->belongsToMany(Identity::class, 'student_x_identify')->withTimestamps();
     }
     public function parentages()
     {

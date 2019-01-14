@@ -17,7 +17,7 @@ class AuditResponsible extends Model
         'audit_process_id', 
         'user_id', 
         'status', 
-        'atributed_date'
+        'attributed_date'
     ];
 
     // Protected define order
