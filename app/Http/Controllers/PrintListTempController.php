@@ -36,4 +36,12 @@ class PrintListTempController extends Controller
 //            ]);
 //        }
     }
+
+    public function getStudentsDegreePrint()
+    {
+        $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
+
+        return response()->json($studentsDegree);
+
+    }
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models_authentication\Address;
-use App\Models_authentication\Student;
+use App\ModelsAuthentication\Address;
+use App\ModelsAuthentication\Student;
 
 class AddressController extends Controller
 {
@@ -49,11 +49,22 @@ class AddressController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   $students = Student::find($id);
+    {   
+        $students = Student::find($id);
+
         $address = Address::find($students->address_id);
+
         if($address){
+
         $address->update($request->all());
+
+        $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']]; 
+
+        return response()->json($return);
         }
+        else{
+            return response()->json('Houve um erro ao realizar operação de atualizar');
+        }      
     }
 
     /**

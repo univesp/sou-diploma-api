@@ -19,7 +19,7 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    'parentages' => 'ParentageController'
+    //'parentages' => 'ParentageController'
 ]);
 
 //Route to save and update dtaa to sou_audit / audit_proccess
@@ -28,5 +28,9 @@ Route::post('responsible-process', 'AuditResponsibleController@responsibleProces
 //Route to  save and update print degree status
 Route::patch('print-status', 'PrintListTempController@printStatus');
 
+Route::get('prints/all', 'PrintListTempController@getStudentsDegreePrint');
+
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 
+//essa rota precisa do tipo 1 mãe , 2 pai
+Route::put('parentages/{id}/{type}','ParentageController@update');
