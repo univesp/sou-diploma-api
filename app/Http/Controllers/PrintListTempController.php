@@ -18,7 +18,7 @@ class PrintListTempController extends Controller
 //        $printStatus->save();
 
 //        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
-        
+
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
         foreach ($printStatus as $print){
