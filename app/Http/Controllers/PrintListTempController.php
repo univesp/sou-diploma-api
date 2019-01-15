@@ -23,7 +23,7 @@ class PrintListTempController extends Controller
 
         foreach ($printStatus as $print){
             $print->status_impress = 1;
-            $printStatus->save();
+            $print->save();
         }
 
 //        if ($printStatus) {
@@ -35,6 +35,16 @@ class PrintListTempController extends Controller
 //                'Message' => 'Falha na impressão!'
 //            ]);
 //        }
+    }
+
+    public function printFail(Request $request)
+    {
+        $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
+
+        foreach ($printStatus as $print){
+            $print->status_impress = 0;
+            $print->save();
+        }
     }
 
     public function getStudentsDegreePrint()
