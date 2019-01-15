@@ -18,7 +18,7 @@ class PrintListTempController extends Controller
 //        $printStatus->save();
 
 //        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
-        
+
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
         foreach ($printStatus as $print){
@@ -35,5 +35,13 @@ class PrintListTempController extends Controller
 //                'Message' => 'Falha na impressão!'
 //            ]);
 //        }
+    }
+
+    public function getStudentsDegreePrint()
+    {
+        $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
+
+        return response()->json($studentsDegree);
+
     }
 }
