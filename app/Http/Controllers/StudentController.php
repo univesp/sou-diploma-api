@@ -50,11 +50,12 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {       
+    {   
+        // studant recebe o id passado pelo a rota    
         $students = Student::find($id);
 
         if($students){
-
+        
             $students->update($request->all()); 
 
             $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']]; 
