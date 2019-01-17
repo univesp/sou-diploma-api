@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Email extends Model
 {
-    // protected $connection = 'mysql_sa';
+    protected $connection = 'mysql_sa';
+    
     protected $fillable = ['email','email_type'];
 
     public function students()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Identity extends Model
 {
-   // protected $connection = 'mysql_sa';
+    protected $connection = 'mysql_sa';
     protected $fillable = ['number'];
 
     public function students()
