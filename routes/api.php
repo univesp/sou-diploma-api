@@ -22,10 +22,10 @@ Route::resources([
     //'parentages' => 'ParentageController'
 ]);
 
-//Route to save and update dtaa to sou_audit / audit_proccess
+//Route to save and update data to sou_audit / audit_proccess
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
 
-//Route to  save and update print degree status
+//Route to save and update print degree status
 Route::patch('print-status', 'PrintListTempController@printStatus');
 Route::patch('print-fail', 'PrintListTempController@printFail');
 
@@ -35,3 +35,13 @@ Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 
 //essa rota precisa do tipo 1 mãe , 2 pai
 Route::put('parentages/{id}/{type}','ParentageController@update');
+
+Route::namespace('API')->name('api.')->group(function() {
+    Route::prefix('prints')->group(function(){
+        Route::get('/','PrintListTempController@index')->name('index_prints');
+        //Route to  save and update print degree status
+        //Route::patch('/status', 'PrintListTempController@printStatus');
+        //Route::patch('/fail'  , 'PrintListTempController@printFail');
+        Route::patch('update'  , 'PrintListTempController@update')->name('update_prints');
+    });
+});

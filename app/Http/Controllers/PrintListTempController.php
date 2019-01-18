@@ -6,35 +6,50 @@ use App\Models\PrintListTemp;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class PrintListTempController extends Controller
-{
+{   
+    public function index()
+    {
+        $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
+
+        return response()->json($studentsDegree);
+    }
+
     public function printStatus(Request $request)
     {
-//        var_dump($request);
+    
+        //dd($request->all());
+        
+        $teste = [$request];
+        
+        $rules = [
+            'academic_register' => 'required|array',
+            'academic_register.*' => 'exists:mysql_sa.students,academic_register', // check each item in the array
+        ];
+        
+        $validator = Validator::make($teste[0]->academic_register, $rules);
+        
+        dd($validator->passes(), $validator->messages()->toArray());
 
-//        $printStatus = PrintListTemp::where('ra', '=', $request->student_id)->first();
-//        $printStatus->status_impress = 1;
-//        $printStatus->save();
+        //########################################################################
 
-//        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
-
+        // $validator = Validator::make($request->all(), [
+        //     'ras.*.ra' => 'required|size:7',
+        // ]);  
+           
+        // if ($validator->fails()) {
+        //     echo "<pre>";
+        //     print_r($validator->messages());
+        // }
+        dd('=)');
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
         foreach ($printStatus as $print){
             $print->status_impress = 1;
             $print->save();
         }
-
-//        if ($printStatus) {
-//            return response()->json([
-//                'Message' => 'Impressão comcluída com sucesso!'
-//            ]);
-//        }else{
-//            return response()->json([
-//                'Message' => 'Falha na impressão!'
-//            ]);
-//        }
     }
 
     public function printFail(Request $request)
@@ -54,4 +69,5 @@ class PrintListTempController extends Controller
         return response()->json($studentsDegree);
 
     }
+    
 }
