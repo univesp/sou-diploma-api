@@ -12,6 +12,10 @@ class AuditResponsibleController extends Controller
     {
         $studentId = AuditProcess::where('student_id',$request->student_id)->first();
 
+        $request->validate([
+            'student_id' => 'required|max:7'
+        ]);
+
         if (!empty($studentId)){
             $auditHistory  = AuditProcess::where('student_id', $request->student_id)->first();
 
@@ -83,8 +87,6 @@ class AuditResponsibleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $id = $request->id;
-        $auditProccessUpdate = AuditProcess::find($request->id);
 
     }
 
