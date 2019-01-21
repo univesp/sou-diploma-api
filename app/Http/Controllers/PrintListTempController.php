@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 
 class PrintListTempController extends Controller
-{   
+{
     public function index()
     {
         $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
@@ -19,31 +19,27 @@ class PrintListTempController extends Controller
 
     public function printStatus(Request $request)
     {
-    
-        //dd($request->all());
-        
-        $teste = [$request];
-        
+        foreach($request->ras as $r) {
+            $ras['academic_register'][] = $r;
+        }
+
         $rules = [
             'academic_register' => 'required|array',
-            'academic_register.*' => 'exists:mysql_sa.students,academic_register', // check each item in the array
+            'academic_register.*' => 'exists:mysql_sa.students,academic_register',
+
         ];
-        
-        $validator = Validator::make($teste[0]->academic_register, $rules);
-        
-        dd($validator->passes(), $validator->messages()->toArray());
 
-        //########################################################################
+        $validator = Validator::make($ras, $rules);
+        $errors = array();
 
-        // $validator = Validator::make($request->all(), [
-        //     'ras.*.ra' => 'required|size:7',
-        // ]);  
-           
-        // if ($validator->fails()) {
-        //     echo "<pre>";
-        //     print_r($validator->messages());
-        // }
-        dd('=)');
+        foreach($validator->messages()->toArray() as $erros) {
+            foreach($erros as $e){
+                $errors['errors'][] = $e;
+            }
+        }
+
+        dd($errors);
+
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
         foreach ($printStatus as $print){
@@ -69,5 +65,5 @@ class PrintListTempController extends Controller
         return response()->json($studentsDegree);
 
     }
-    
+
 }
