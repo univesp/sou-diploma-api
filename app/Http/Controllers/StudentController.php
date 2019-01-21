@@ -76,4 +76,11 @@ class StudentController extends Controller
     {
         //
     }
+
+    public function studentsAudit()
+    {
+        $student = new \App\Models\Student();
+
+        $student->getStudentsAudit();
+    }
 }

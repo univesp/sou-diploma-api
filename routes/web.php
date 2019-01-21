@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('/report/universityDegree/web', 'AuditUniversityDegreePrintController@universityDegreeWeb');
+
+Route::get('/students/audit', 'StudentController@studentsAudit');
