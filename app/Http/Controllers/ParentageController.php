@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\ModelsAuthentication\Student;
 use App\Http\Requests\ParentageRequest;
 use App\ModelsAuthentication\Parentage;
-use App\ModelsAuthentication\ParentageType;
 
 class ParentageController extends Controller
 {
@@ -40,18 +38,12 @@ class ParentageController extends Controller
      */
     public function show($id)
     {
-        $parentage = Parentage::find($id);
+        $parentage = Parentage::where('gender', $id)->get();
 
         if ($parentage) {
-            //$parentagetyType = ParentageType::find($parentage->parentage_type_id);
-
-            return $parentage = Parentage::find($id);
+            return response()->json($parentage);
         } else {
-            return response()->json([
-                'errors' => [
-                'message' => 'Não encontrado',
-                ],
-            ], 404);
+            return response()->json(['errors' => ['message' => 'Não realizar esse operação']], 404);
         }
     }
 
@@ -65,17 +57,26 @@ class ParentageController extends Controller
      */
     public function update(ParentageRequest $request, $id)
     {
-        // $students = Student::find($id);
+        // para atualizar o nomes do pais, você vai precisa dos ids de cada uma deles no metédo show passando o id do stuand você vai ter como o resultado o id do pai e mãe associado a o estudante.
+        $parentage = Parentage::find($id);
 
-        // foreach ($students->parentages as $parentage) {
-        //     if ($parentage->parentage_type_id == 1) {
-        //         $parentage->update($request->all());
+        if ($parentage) {
+            if ($parentage->parentage_type_id == 1) {
+                $parentage->update($request->all());
 
-        //         $return = ['data' => ['msg' => 'Nome atualizado com sucesso!']];
+                $return = ['data' => ['status' => true, 'mãe' => 'atualizado com sucesso!'], 200];
 
-        //         return response()->json($return);
-        //     }
-        // }
+                return response()->json($return);
+            } else {
+                $parentage->update($request->all());
+
+                $return = ['data' => ['status' => true, 'pai' => 'atualizado com sucesso!'], 200];
+
+                return response()->json($return);
+            }
+        } else {
+            return response()->json(['errors' => ['message' => 'Não realizar esse operação']], 404);
+        }
     }
 
     /**

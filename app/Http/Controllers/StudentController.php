@@ -68,7 +68,7 @@ class StudentController extends Controller
         if ($students) {
             $students->update($request->all());
 
-            $return = ['data' => ['success' => true, 'msg' => 'Stundent atualizado com sucesso!'], 200];
+            $return = ['data' => ['status' => true, 'msg' => 'Stundent atualizado com sucesso!'], 200];
 
             return response()->json($return);
         } else {
