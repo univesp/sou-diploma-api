@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class StudentValidateDegree extends Controller
 {
@@ -17,10 +18,10 @@ class StudentValidateDegree extends Controller
 
         $temp = explode('/?', $request->query('ra'));
 
-        $data = [
-            'ra' => $temp[0],
-            'turma' => $request->query('turma'),
-        ];
+        $ra = $temp[0];
+        $class = $request->query('turma');
+
+        $data = DB::connection('mysql_sa')->select('select * from v_print_list_temp where ra = :ra and class_id = :class_id', ['ra' => $ra, 'class_id' => $class]);
 
         return view('degree.degree', compact('data'));
     }
