@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ModelsAuthentication\Student;
+use App\Models\AuditProcess;
 use App\Erros;
 
 class StudentController extends Controller
@@ -77,10 +78,25 @@ class StudentController extends Controller
         //
     }
 
-    public function studentsAudit()
+    public function auditStudents()
     {
-        $student = new \App\Models\Student();
+        
+        $students = Student::select('id', 'name', 'academic_register')->take(1000)->get();       
 
-        $student->getStudentsAudit();
+        foreach($students as $student) {
+            
+            $process = AuditProcess::where('student_id', $student->id)->where('status', '1')->get();
+
+        }
+       
+        dd($process);
+
+        foreach($students as $student) {
+            
+            $university = UniversityDegreeList::select('YEAR(date_conclusion)')->where('student_id', $student->id)->get();
+
+        }
+
+       return response($process,200);
     }
 }

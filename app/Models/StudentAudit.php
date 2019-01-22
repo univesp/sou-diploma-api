@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class Student extends Model
+class StudentAudit extends Model
 {
     protected $connection = 'mysql_sa';
 
@@ -56,11 +56,15 @@ class Student extends Model
         //     limit 10
         // ');
 
-        $students = \DB::table('mysql_sa.students')
-                    ->join('mysql.audit_processes', 'mysql_sa.students.id', '=', 'mysql.audit_processes.student_id')
+        // $students = \DB::select('select sou_authentication.students.id from sou_authentication.students 
+        //                         join sou_audit.audit_processes 
+        //                         on sou_authentication.students.id = sou_audit.audit_processes.student_id');
+        
+        /*$students = \DB::table('sou_authentication.students')
+                    ->join('sou_audit.audit_processes', 'sou_authentication.students.id', '=', 'sou_audit.audit_processes.student_id')
                     ->select('*')
-                    ->get();
+                    ->get();*/
 
-        return json_encode($students);
+        return response($students, 200);
     }
 }
