@@ -12,7 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // $a = new App\teste\classe();
+    // //return view('welcome');
+
+    // $a->teste1();
 });
 
 Route::get('/report/universityDegree/web', 'AuditUniversityDegreePrintController@universityDegreeWeb');
