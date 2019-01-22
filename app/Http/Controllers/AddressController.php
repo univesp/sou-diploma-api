@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AddressRequest;
 use App\ModelsAuthentication\Address;
 use App\ModelsAuthentication\Student;
 
@@ -21,60 +22,69 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $students = Student::find($id);
-        return $address = Address::find($students->address_id);
+
+        if ($students) {
+            return $address = Address::find($students->address_id);
+        } else {
+            return response()->json([
+                'errors' => [
+                'message' => 'Não encontrado',
+                ],
+            ], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {   
+    public function update(AddressRequest $request, $id)
+    {
         $students = Student::find($id);
 
         $address = Address::find($students->address_id);
 
-        if($address){
+        if ($address) {
+            $address->update($request->all());
 
-        $address->update($request->all());
+            $return = ['data' => ['success' => 'Endereço atualizado com sucesso!'], 200];
 
-        $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']]; 
-
-        return response()->json($return);
+            return response()->json($return);
+        } else {
+            return response()->json('Houve um erro ao realizar operação de atualizar', 404);
         }
-        else{
-            return response()->json('Houve um erro ao realizar operação de atualizar');
-        }      
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
     }
 }
