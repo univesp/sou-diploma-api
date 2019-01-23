@@ -15,6 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
+        // Return students list with paginate
         return $students = Student::paginate(10);
     }
 
@@ -27,6 +28,7 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
+        // Returnt all request
         return $request->all();
     }
 
@@ -39,14 +41,18 @@ class StudentController extends Controller
      */
     public function show($id)
     {
+        // Find students by ids
         $students = Student::find($id);
 
+        // Validation if students exists
         if ($students) {
+            // Return students
             return response()->json($students);
         } else {
+            // Return error messages
             return response()->json([
                 'errors' => [
-                'message' => 'Não encontrado',
+                'message' => 'Estudante não encontrado.',
                 ],
             ], 404);
         }
@@ -62,17 +68,20 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, $id)
     {
-        // studant recebe o id passado pelo a rota
+         // Find students by ids
         $students = Student::find($id);
 
+        // Validation if students exists
         if ($students) {
+            // Update al request of students
             $students->update($request->all());
 
-            $return = ['data' => ['status' => true, 'msg' => 'Stundent atualizado com sucesso!'], 200];
-
+            // Return success messages
+            $return = ['data' => ['status' => true, 'msg' => 'Estudante atualizado com sucesso!.'], 200];
             return response()->json($return);
         } else {
-            return response()->json('Houve um erro ao realizar operação de atualizar', 404);
+            // Return error messages
+            return response()->json('Houve um erro ao atualizar o estudante.', 404);   
         }
     }
 
