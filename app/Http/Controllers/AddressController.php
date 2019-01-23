@@ -16,6 +16,7 @@ class AddressController extends Controller
      */
     public function index()
     {
+        // Return address list with paginate
         return $address = Address::paginate(10);
     }
 
@@ -39,14 +40,18 @@ class AddressController extends Controller
      */
     public function show($id)
     {
+        // Find students by id
         $students = Student::find($id);
 
+        // Validation if students exists
         if ($students) {
+            // Return address by students
             return $address = Address::find($students->address_id);
         } else {
+            // Return error messages 
             return response()->json([
                 'errors' => [
-                'message' => 'Não encontrado',
+                'message' => 'Endereço não encontrado.',
                 ],
             ], 404);
         }
@@ -62,18 +67,23 @@ class AddressController extends Controller
      */
     public function update(AddressRequest $request, $id)
     {
+        // Find students by id
         $students = Student::find($id);
 
+        // Find address id by students
         $address = Address::find($students->address_id);
 
+        // Validation if address exists
         if ($address) {
+            // Update al request of address
             $address->update($request->all());
 
-            $return = ['data' => ['success' => 'Endereço atualizado com sucesso!'], 200];
-
+            // Return success messages
+            $return = ['data' => ['success' => 'Endereço atualizado com sucesso!.'], 200];
             return response()->json($return);
         } else {
-            return response()->json('Houve um erro ao realizar operação de atualizar', 404);
+            // Return error messages
+            return response()->json('Houve um erro ao atualizar o endereço', 404);
         }
     }
 
@@ -86,5 +96,6 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
+  
     }
 }
