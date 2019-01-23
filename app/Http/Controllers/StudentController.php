@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ModelsAuthentication\Student;
 use App\Models\AuditProcess;
+use App\Models\UniversityDegreeList;
 use App\Erros;
 
 class StudentController extends Controller
@@ -51,20 +52,20 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {       
+    {
         $students = Student::find($id);
 
         if($students){
 
-            $students->update($request->all()); 
+            $students->update($request->all());
 
-            $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']]; 
+            $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']];
 
             return response()->json($return);
 
         }else{
             return response()->json('Houve um erro ao realizar operação de atualizar');
-        }      
+        }
     }
 
     /**
@@ -80,23 +81,23 @@ class StudentController extends Controller
 
     public function auditStudents()
     {
-        
-        $students = Student::select('id', 'name', 'academic_register')->take(1000)->get();       
 
-        foreach($students as $student) {
-            
-            $process = AuditProcess::where('student_id', $student->id)->where('status', '1')->get();
+        $result = DB::select('*')
+            ->from('sou_audit.audit_processes')
+            ->join('sou_authentication.students', function ($join) {
+                $join->on('sou_audit.audit_processes.student_id', '=', 'sou_authentication.students.id')->where('audit_type_status_id', '1');
+            })
+            ->take(1)->get();
 
-        }
-       
-        dd($process);
+        return response($result, 200);
 
-        foreach($students as $student) {
-            
-            $university = UniversityDegreeList::select('YEAR(date_conclusion)')->where('student_id', $student->id)->get();
+        $process = AuditProcess::where('audit_type_status_id', '1')->get();
 
-        }
+        $university = UniversityDegreeList::all();
 
-       return response($process,200);
+        $students = Student::select('id', 'name', 'academic_register')->get();
+
+        return response($university, 200);
+
     }
 }
