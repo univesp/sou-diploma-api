@@ -8,6 +8,7 @@ use App\ModelsAuthentication\Student;
 use App\Models\AuditProcess;
 use App\Models\UniversityDegreeList;
 use App\Erros;
+use DB;
 
 class StudentController extends Controller
 {
@@ -92,15 +93,20 @@ class StudentController extends Controller
 
     public function auditStudents()
     {
+        
+        // ,co.id course_id, co.name course_name, c.year_entry 
+        // left join sou_authentication.classes c on c.id = s.class_id
+        // left join sou_authentication.courses co on co.id = c.course_id
 
-        $result = DB::select('*')
-            ->from('sou_audit.audit_processes')
-            ->join('sou_authentication.students', function ($join) {
-                $join->on('sou_audit.audit_processes.student_id', '=', 'sou_authentication.students.id')->where('audit_type_status_id', '1');
-            })
-            ->take(1)->get();
+        $data = DB::select('select 
+                                p.id process_id, p.user_id, st.audit_status_name, 
+                                s.id student_id, s.academic_register ra_student, s.name student_name 
+                            from sou_authentication.students s 
+                            join sou_audit.audit_processes p on p.academic_register = s.academic_registery 
+                            join sou_audit.type_status st on p.audit_type_status_id = st.id
+                            limit 100');
 
-        return response($result, 200);
+        return response($data, 200);
 
         $process = AuditProcess::where('audit_type_status_id', '1')->get();
 
