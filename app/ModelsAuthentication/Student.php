@@ -15,6 +15,10 @@ class Student extends Model
     {
         return $this->belongsToMany(Identity::class, 'student_x_identify')->withTimestamps();
     }
+    public function emails()
+    {
+        return $this->belongsToMany(Email::class,'student_x_emails')->withTimestamps();
+    }
     public function parentages()
     {
         return $this->belongsToMany(Parentage::class, 'student_x_parentage')->withTimestamps();
