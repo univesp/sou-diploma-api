@@ -8,7 +8,7 @@ use App\ModelsAuthentication\Student;
 use App\Models\AuditProcess;
 use App\Models\UniversityDegreeList;
 use App\Erros;
-
+use DB;
 class StudentController extends Controller
 {
     /**
@@ -98,20 +98,34 @@ class StudentController extends Controller
 
     public function auditStudents()
     {
+        try {
+            $data = DB::select('SELECT
+                                    p.id process_id,
+                                    s.id student_id,
+                                    s.academic_register ra_student,
+                                    s.name student_name,
+                                    st.audit_status_name,
+                                    co.id course_id,
+                                    co.name course_name,
+                                    c.year_entry year_entry,
+                                    YEAR ( l.date_conclusion ) year_conclusion,
+                                    p.user_id
+                                FROM sou_authentication.students s
+                                JOIN sou_audit.university_degree_lists l ON s.id = l.student_id
+                                JOIN sou_audit.audit_processes p ON p.academic_register = s.academic_register
+                                JOIN sou_audit.type_status st ON p.audit_type_status_id = st.id
+                                JOIN sou_authentication.classes c ON s.class_id = c.id
+                                JOIN sou_authentication.courses co ON co.id = c.course_id
+                                WHERE st.id = 1');
 
-        // ,co.id course_id, co.name course_name, c.year_entry
-        // left join sou_authentication.classes c on c.id = s.class_id
-        // left join sou_authentication.courses co on co.id = c.course_id
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
 
-        $data = DB::select('select
-                                p.id process_id, p.user_id, st.audit_status_name,
-                                s.id student_id, s.academic_register ra_student, s.name student_name
-                            from sou_authentication.students s
-                            join sou_audit.audit_processes p on p.academic_register = s.academic_registery
-                            join sou_audit.type_status st on p.audit_type_status_id = st.id
-                            limit 100');
-
-        return response($data, 200);
-
+        if(!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos os dados da API de alunos auditados.', 200);
+        }
     }
 }

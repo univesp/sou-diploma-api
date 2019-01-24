@@ -36,6 +36,10 @@ Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 //essa rota precisa do tipo 1 mãe , 2 pai
 Route::put('parentages/{id}/{type}','ParentageController@update');
 
+// Eduardo Oliveira
+// Authentication
+Route::get('/v_auditados', 'StudentController@auditStudents');
+
 Route::namespace('API')->name('api.')->group(function() {
     Route::prefix('prints')->group(function(){
         Route::get('/','PrintListTempController@index')->name('index_prints');
