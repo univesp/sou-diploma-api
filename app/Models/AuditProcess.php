@@ -18,7 +18,7 @@ class AuditProcess extends Model
         'attributed_date', 
         'audit_type_id', 
         'accept_law', 
-        'status', 
+        'audit_status_name',
         'intership', 
         'commitment_term', 
         'activity_plan', 
@@ -35,7 +35,7 @@ class AuditProcess extends Model
         'attributed_date', 
         'audit_type_id', 
         'accept_law', 
-        'status', 
+        'audit_status_name',
         'intership', 
         'commitment_term', 
         'activity_plan', 
@@ -79,9 +79,5 @@ class AuditProcess extends Model
     {
         return $this->hasMany(AuditDocument::class);
     }
-
-    public function universityDegreePrints()
-    {
-        return $this->hasMany(UniversityDegreePrint::class);
-    }
+    
 }

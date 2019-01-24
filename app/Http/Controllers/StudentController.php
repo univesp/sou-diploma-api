@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StudentRequest;
 use App\ModelsAuthentication\Student;
-<<<<<<< HEAD
 use App\Models\AuditProcess;
 use App\Models\UniversityDegreeList;
 use App\Erros;
-=======
->>>>>>> upstream/devel
 
 class StudentController extends Controller
 {
@@ -72,18 +69,7 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
     public function update(Request $request, $id)
-    {
-        $students = Student::find($id);
-
-        if($students){
-
-            $students->update($request->all());
-
-            $return = ['data' => ['msg' => 'Stundent atualizado com sucesso!']];
-=======
-    public function update(StudentRequest $request, $id)
     {
          // Find students by ids
         $students = Student::find($id);
@@ -92,21 +78,11 @@ class StudentController extends Controller
         if ($students) {
             // Update al request of students
             $students->update($request->all());
->>>>>>> upstream/devel
 
-            // Return success messages
-            $return = ['data' => ['status' => true, 'msg' => 'Estudante atualizado com sucesso!.'], 200];
-            return response()->json($return);
-<<<<<<< HEAD
-
-        }else{
-            return response()->json('Houve um erro ao realizar operação de atualizar');
-=======
         } else {
             // Return error messages
-            return response()->json('Houve um erro ao atualizar o estudante.', 404);   
->>>>>>> upstream/devel
         }
+        return response()->json('Houve um erro ao atualizar o estudante.', 404);
     }
 
     /**
@@ -123,22 +99,19 @@ class StudentController extends Controller
     public function auditStudents()
     {
 
-        $result = DB::select('*')
-            ->from('sou_audit.audit_processes')
-            ->join('sou_authentication.students', function ($join) {
-                $join->on('sou_audit.audit_processes.student_id', '=', 'sou_authentication.students.id')->where('audit_type_status_id', '1');
-            })
-            ->take(1)->get();
+        // ,co.id course_id, co.name course_name, c.year_entry
+        // left join sou_authentication.classes c on c.id = s.class_id
+        // left join sou_authentication.courses co on co.id = c.course_id
 
-        return response($result, 200);
+        $data = DB::select('select
+                                p.id process_id, p.user_id, st.audit_status_name,
+                                s.id student_id, s.academic_register ra_student, s.name student_name
+                            from sou_authentication.students s
+                            join sou_audit.audit_processes p on p.academic_register = s.academic_registery
+                            join sou_audit.type_status st on p.audit_type_status_id = st.id
+                            limit 100');
 
-        $process = AuditProcess::where('audit_type_status_id', '1')->get();
-
-        $university = UniversityDegreeList::all();
-
-        $students = Student::select('id', 'name', 'academic_register')->get();
-
-        return response($university, 200);
+        return response($data, 200);
 
     }
 }
