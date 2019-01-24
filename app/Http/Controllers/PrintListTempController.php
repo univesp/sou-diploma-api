@@ -6,18 +6,39 @@ use App\Models\PrintListTemp;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class PrintListTempController extends Controller
 {
+    public function index()
+    {
+        $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
+
+        return response()->json($studentsDegree);
+    }
+
     public function printStatus(Request $request)
     {
-//        var_dump($request);
+        foreach($request->ras as $r) {
+            $ras['academic_register'][] = $r;
+        }
 
-//        $printStatus = PrintListTemp::where('ra', '=', $request->student_id)->first();
-//        $printStatus->status_impress = 1;
-//        $printStatus->save();
+        $rules = [
+            'academic_register' => 'required|array',
+            'academic_register.*' => 'exists:mysql_sa.students,academic_register',
 
-//        $printStatus = DB::table('print_list_temp')->whereIn('RA', $request->ras)->get();
+        ];
+
+        $validator = Validator::make($ras, $rules);
+        $errors = array();
+
+        foreach($validator->messages()->toArray() as $erros) {
+            foreach($erros as $e){
+                $errors['errors'][] = $e;
+            }
+        }
+
+        dd($errors);
 
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
@@ -25,16 +46,6 @@ class PrintListTempController extends Controller
             $print->status_impress = 1;
             $print->save();
         }
-
-//        if ($printStatus) {
-//            return response()->json([
-//                'Message' => 'Impressão comcluída com sucesso!'
-//            ]);
-//        }else{
-//            return response()->json([
-//                'Message' => 'Falha na impressão!'
-//            ]);
-//        }
     }
 
     public function printFail(Request $request)
@@ -54,4 +65,5 @@ class PrintListTempController extends Controller
         return response()->json($studentsDegree);
 
     }
+
 }
