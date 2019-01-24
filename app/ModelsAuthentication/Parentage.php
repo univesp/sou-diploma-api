@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Parentage extends Model
 {
-    // protected $connection = 'mysql_sa';
-    protected $fillable = ['name'];
+    protected $connection = 'mysql_sa';
+    protected $fillable = ['name', 'gender'];
 
     public function students()
     {
@@ -16,7 +16,6 @@ class Parentage extends Model
 
     public function parentage_types()
     {
-        return $this->belongsTo(Parentage::class,'parentage_type_id')->withTimestamps();
+        return $this->belongsTo(Parentage::class, 'parentage_type_id')->withTimestamps();
     }
-    
 }

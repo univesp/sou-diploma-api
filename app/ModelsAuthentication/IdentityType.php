@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IdentityType extends Model
 {
-    //protected $connection = 'mysql_sa';
+    protected $connection = 'mysql_sa';
 
     protected $fillable = ['id','name'];
     
