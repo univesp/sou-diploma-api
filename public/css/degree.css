@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    font-family: "Open Sans";
+    color: #fff;
+    font-weight: 700;
+  }
+  
+  #mensagem {
+    border-radius: 20px;
+    width: 35vw;
+    height: 35vh;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  
+  #msg {
+    margin-top: 20px;
+    margin-left: 150px;
+  }
+  
+  .success {
+    background-color: #2bb673;
+  }
+  .fail {
+    background-color: red;
+  }
+  .status-image {
+    width: 150px;
+    height: 100px;
+    position: absolute;
+    top: 20px;
+  }

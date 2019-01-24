@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/report/universityDegree/web', 'AuditUniversityDegreePrintController@universityDegreeWeb');
+Route::get('/valida-diploma','StudentValidateDegree@show')->name('degree');

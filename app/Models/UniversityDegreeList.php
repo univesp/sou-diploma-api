@@ -37,4 +37,5 @@ class UniversityDegreeList extends Model
         'created_at', 
         'update_at'
     ];
+    
 }
