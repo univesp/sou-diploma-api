@@ -19,7 +19,7 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    //'parentages' => 'ParentageController'
+    'parentages' => 'ParentageController',
 ]);
 
 //Route to save and update data to sou_audit / audit_proccess
