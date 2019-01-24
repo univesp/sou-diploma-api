@@ -4,20 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\AuditProcess;
 use App\Models\AuditResponsible;
+use App\Models\User;
+use App\Models\UserTemp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuditResponsibleController extends Controller
 {
     public function responsibleProcess(Request $request)
     {
-        $studentId = AuditProcess::where('student_id',$request->student_id)->first();
+        //Count proccess from each analyst
+        $nProcesses = DB::table('audit_processes')
+            ->select('user_id')
+            ->where('user_id', '=', $request->id)
+            ->groupBy('user_id')
+            ->count();
 
+        //Validate academic_register
         $request->validate([
             'student_id' => 'required|max:7'
         ]);
 
-        if (!empty($studentId)){
-            $auditHistory  = AuditProcess::where('student_id', $request->student_id)->first();
+        //verify if student is already atributted to some analyst
+        $studentId = AuditProcess::where('academic_register', $request->student_id)->first();
+
+        //if yes, so the register is updated and a hystory is recorded on audit_responsible
+        if (!empty($studentId)) {
+
+            $auditHistory = AuditProcess::where('academic_register', $request->student_id)->first();
 
             AuditResponsible::create([
                 'audit_process_id' => $auditHistory->id,
@@ -28,21 +42,34 @@ class AuditResponsibleController extends Controller
 
             $updateProccess = AuditProcess::find($studentId->id);
             $updateProccess->user_id = $request->id;
-            $updateProccess->student_id = $request->student_id;
+            $updateProccess->academic_register = $request->student_id;
             $updateProccess->audit_type_id = 3;
             $updateProccess->status = "EM ANDAMENTO";
             $updateProccess->attributed_date = date('Y-m-d H:i:s');
             $updateProccess->save();
 
-        }else{
+            //increment proccess register
+            $nProcesses = $nProcesses + 1;
+
+        } else {
+            //if no, so a new register is recorded on audit_processes
+
             $auditProcess = new AuditProcess();
             $auditProcess->user_id = $request->id;
-            $auditProcess->student_id = $request->student_id;
+            $auditProcess->audit_type_status_id = 2;
+            $auditProcess->academic_register = $request->student_id;
             $auditProcess->audit_type_id = 3;
             $auditProcess->status = "EM ANDAMENTO";
             $auditProcess->attributed_date = date('Y-m-d H:i:s');
             $auditProcess->save();
+
+            //increment proccess register
+            $nProcesses = $nProcesses + 1;
         }
+
+        $updateNProcesses = UserTemp::find($request->id);
+        $updateNProcesses->processes = $nProcesses;
+        $updateNProcesses->save();
     }
 
 
@@ -59,7 +86,7 @@ class AuditResponsibleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -70,7 +97,7 @@ class AuditResponsibleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -81,8 +108,8 @@ class AuditResponsibleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -93,7 +120,7 @@ class AuditResponsibleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
