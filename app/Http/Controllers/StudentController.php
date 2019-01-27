@@ -300,7 +300,142 @@ class StudentController extends Controller
         } else {
             return response('Não encontramos os dado pessoal do aluno.', 200);
         }
+
     }
+
+    public function organIssuing($id = '')
+    {
+        $issui = $id ? " WHERE i.id = {$id}" : '';
+
+        try {
+            $data = DB::select('SELECT
+                                    i.id,
+                                    i.name
+                                FROM sou_authentication.issuing_entities i
+                                '. $issui . '
+                                ORDER BY i.name');
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos o orgão emissor do alunos.', 200);
+        }
+    }
+
+    public function nationality($id = '')
+    {
+        $nationality = $id ? " WHERE c.id = {$id}" : '';
+
+        try {
+            $data = DB::select('SELECT
+                                    c.id,
+                                    c.portuguese_name
+                                FROM sou_authentication.countries c
+                                ' . $nationality . '
+                                ORDER BY c.portuguese_name');
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos as nacionalidades do alunos.', 200);
+        }
+    }
+
+    public function retained()
+    {
+        try {
+            $data = DB::select('SELECT
+                                    p.id AS process_id,
+                                    s.id AS student_id,
+                                    s.name AS student_name,
+                                    co.name AS course_name,
+                                    st.audit_status_name AS status,
+                                    c.year_entry AS year_entry,
+                                    YEAR (l.date_conclusion) AS year_conclusion,
+                                    group_concat(i.field_name SEPARATOR ",") AS reason_retention,
+                                    p.user_id
+                                FROM sou_audit.audit_processes p
+                                JOIN sou_audit.type_status st ON st.id = p.audit_type_status_id
+                                JOIN sou_audit.university_degree_lists l ON p.student_id = l.student_id
+                                JOIN sou_authentication.students s ON s.id = p.student_id
+                                JOIN sou_authentication.classes c ON s.class_id = c.id
+                                JOIN sou_authentication.courses co ON co.id = c.course_id
+                                JOIN sou_audit.item_audit_processes i ON i.audit_process_id = p.id
+                                WHERE st.id = 3 AND i.inconsistency = 1');
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos alunos retidos.', 200);
+        }
+    }
+
+    public function ticketData($student_id = '')
+    {
+
+        $student = $student_id ? " WHERE s.id = {$student_id}" : '';
+
+        try {
+            $data = DB::select('SELECT
+                                    s.id,
+                                    co.name,
+                                    "Graduação" AS nivel,
+                                    l.name AS polo,
+                                    c.year_entry,
+                                    date_format(lu.date_conclusion, "%d/%c/%Y") AS date_conclusion,
+                                    "Graduado" AS grau_conferido,
+                                    date_format(lu.date_collation, "%d/%c/%Y") AS date_collation
+                                FROM sou_authentication.students s
+                                JOIN sou_authentication.classes c ON s.class_id = c.id
+                                JOIN sou_authentication.locations l ON c.location_id = l.id
+                                JOIN sou_authentication.courses co ON co.id = c.course_id
+                                JOIN sou_audit.university_degree_lists lu ON lu.student_id = s.id
+                                '. $student);
+
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos alunos ingressados.', 200);
+        }
+    }
+
+    public function city($city_id = '')
+    {
+
+        $city = $city_id ? " WHERE c.id = {$city_id}" : '';
+
+        try {
+            $data = DB::select('SELECT
+                                    c.id,c.name
+                                FROM sou_authentication.cities c
+                                '. $city . '
+                                ORDER BY c.name');
+
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos as cidades.', 200);
+        }
+    }
+
+
 
 
 }
