@@ -39,6 +39,11 @@ Route::put('parentages/{id}/{type}','ParentageController@update');
 // Eduardo Oliveira
 // Authentication
 Route::get('/v_auditados', 'StudentController@auditStudents');
+Route::get('/v_geral', 'StudentController@reserchStudents');
+Route::get('/v_em_aberto', 'StudentController@openedStudents');
+Route::get('/v_atribuidos', 'StudentController@attributedStudents');
+Route::get('/v_dados_pessoais/{id_student}', 'StudentController@dataPersonalStudents');
+
 
 Route::namespace('API')->name('api.')->group(function() {
     Route::prefix('prints')->group(function(){
