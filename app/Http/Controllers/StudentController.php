@@ -412,10 +412,10 @@ class StudentController extends Controller
         }
     }
 
-    public function city($city_id = '')
+    public function city($id = '')
     {
 
-        $city = $city_id ? " WHERE c.id = {$city_id}" : '';
+        $city = $id ? " WHERE c.id = {$id}" : '';
 
         try {
             $data = DB::select('SELECT
@@ -432,6 +432,29 @@ class StudentController extends Controller
             return response($data, 200);
         } else {
             return response('Não encontramos as cidades.', 200);
+        }
+    }
+
+    public function states($id = '')
+    {
+
+        $state = $id ? " WHERE e.id = {$id}" : '';
+
+        try {
+            $data = DB::select('SELECT
+                                    e.id,e.uf
+                                FROM sou_authentication.states e
+                                '. $state . '
+                                ORDER BY e.uf');
+
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos os estados.', 200);
         }
     }
 

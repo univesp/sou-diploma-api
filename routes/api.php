@@ -48,3 +48,4 @@ Route::get('/v_orgao_emissor/{id?}', 'StudentController@organIssuing');
 Route::get('/v_nacionalidade/{id?}', 'StudentController@nationality');
 Route::get('/v_dados_ingressos/{student_id?}', 'StudentController@ticketData');
 Route::get('/v_cidade/{id?}', 'StudentController@city');
+Route::get('/v_estados/{id?}', 'StudentController@states');
