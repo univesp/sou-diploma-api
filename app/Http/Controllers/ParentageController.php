@@ -59,15 +59,18 @@ class ParentageController extends Controller
     {
         // para atualizar o nomes do pais, você vai precisa dos ids de cada uma deles no metédo show passando o id do stuand você vai ter como o resultado o id do pai e mãe associado a o estudante.
         $parentage = Parentage::find($id);
-
+        // Find Parentage by id
         if ($parentage) {
+            //check parentage_type_id
             if ($parentage->parentage_type_id == 1) {
+                // Update all request of mom
                 $parentage->update($request->all());
 
                 $return = ['data' => ['status' => true, 'mãe' => 'atualizado com sucesso!'], 200];
 
                 return response()->json($return);
             } else {
+                // Update all request of dad
                 $parentage->update($request->all());
 
                 $return = ['data' => ['status' => true, 'pai' => 'atualizado com sucesso!'], 200];
@@ -75,7 +78,10 @@ class ParentageController extends Controller
                 return response()->json($return);
             }
         } else {
-            return response()->json(['errors' => ['message' => 'Não realizar esse operação']], 404);
+            // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar.'], 404];
+
+            return response()->json($return);
         }
     }
 

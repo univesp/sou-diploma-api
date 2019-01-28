@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StudentRequest;
 use App\ModelsAuthentication\Student;
-use App\Models\AuditProcess;
-use App\Models\UniversityDegreeList;
-use App\Erros;
 use DB;
+
 class StudentController extends Controller
 {
     /**
@@ -69,9 +67,9 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
-         // Find students by ids
+        // Find students by ids
         $students = Student::find($id);
 
         // Validation if students exists
@@ -79,10 +77,16 @@ class StudentController extends Controller
             // Update al request of students
             $students->update($request->all());
 
+            // Return true messages
+            $return = ['data' => ['status' => true, 'msg' => 'estudante atualizado com sucesso.'], 200];
+
+            return response()->json($return);
         } else {
             // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o estudante.'], 404];
+
+            return response()->json($return);
         }
-        return response()->json('Houve um erro ao atualizar o estudante.', 404);
     }
 
     /**
@@ -117,12 +121,11 @@ class StudentController extends Controller
                                 JOIN sou_authentication.classes c ON s.class_id = c.id
                                 JOIN sou_authentication.courses co ON co.id = c.course_id
                                 WHERE st.id = 1');
-
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
 
-        if(!empty($data)) {
+        if (!empty($data)) {
             return response($data, 200);
         } else {
             return response('Não encontramos os dados da API de alunos auditados.', 200);
@@ -131,9 +134,8 @@ class StudentController extends Controller
 
     public function reserchStudents()
     {
-
         try {
-             $data = DB::select('SELECT
+            $data = DB::select('SELECT
                                     co.id,
                                     co.name,
                                     c.year_entry,
@@ -144,7 +146,6 @@ class StudentController extends Controller
                                 JOIN sou_authentication.classes  c ON c.id  = s.class_id
                                 JOIN sou_authentication.courses co ON co.id = c.course_id
                                 GROUP BY co.id, co.name, c.year_entry, ano_conclusao');
-
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -158,7 +159,6 @@ class StudentController extends Controller
 
     public function openedStudents()
     {
-
         try {
             $data = DB::select('SELECT
                                     co.id AS course_id,
@@ -195,7 +195,6 @@ class StudentController extends Controller
 
     public function attributedStudents()
     {
-
         try {
             $data = DB::select('SELECT
                                     p.user_id, t.name, count(p.user_id) as "numeros de processos"
@@ -211,12 +210,10 @@ class StudentController extends Controller
         } else {
             return response('Não encontramos alunos atribuidos.', 200);
         }
-
     }
 
     public function dataPersonalStudents($id_students)
     {
-
         try {
             $data = DB::select('SELECT
                                     s.id,
@@ -290,7 +287,7 @@ class StudentController extends Controller
                                             JOIN sou_authentication.parentages p ON sp.parentage_id = p.id
                                             WHERE p.parentage_type_id = 2
                                     ) p ON p.student_id = s.id
-                                    where s.id = ' . $id_students);
+                                    where s.id = '.$id_students);
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -300,7 +297,6 @@ class StudentController extends Controller
         } else {
             return response('Não encontramos os dado pessoal do aluno.', 200);
         }
-
     }
 
     public function organIssuing($id = '')
@@ -312,7 +308,7 @@ class StudentController extends Controller
                                     i.id,
                                     i.name
                                 FROM sou_authentication.issuing_entities i
-                                '. $issui . '
+                                '.$issui.'
                                 ORDER BY i.name');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
@@ -334,7 +330,7 @@ class StudentController extends Controller
                                     c.id,
                                     c.portuguese_name
                                 FROM sou_authentication.countries c
-                                ' . $nationality . '
+                                '.$nationality.'
                                 ORDER BY c.portuguese_name');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
@@ -381,7 +377,6 @@ class StudentController extends Controller
 
     public function ticketData($student_id = '')
     {
-
         $student = $student_id ? " WHERE s.id = {$student_id}" : '';
 
         try {
@@ -399,8 +394,7 @@ class StudentController extends Controller
                                 JOIN sou_authentication.locations l ON c.location_id = l.id
                                 JOIN sou_authentication.courses co ON co.id = c.course_id
                                 JOIN sou_audit.university_degree_lists lu ON lu.student_id = s.id
-                                '. $student);
-
+                                '.$student);
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -414,16 +408,14 @@ class StudentController extends Controller
 
     public function city($id = '')
     {
-
         $city = $id ? " WHERE c.id = {$id}" : '';
 
         try {
             $data = DB::select('SELECT
                                     c.id,c.name
                                 FROM sou_authentication.cities c
-                                '. $city . '
+                                '.$city.'
                                 ORDER BY c.name');
-
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -437,16 +429,14 @@ class StudentController extends Controller
 
     public function states($id = '')
     {
-
         $state = $id ? " WHERE e.id = {$id}" : '';
 
         try {
             $data = DB::select('SELECT
                                     e.id,e.uf
                                 FROM sou_authentication.states e
-                                '. $state . '
+                                '.$state.'
                                 ORDER BY e.uf');
-
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -457,8 +447,4 @@ class StudentController extends Controller
             return response('Não encontramos os estados.', 200);
         }
     }
-
-
-
-
 }
