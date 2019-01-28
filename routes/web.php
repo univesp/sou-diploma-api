@@ -12,11 +12,11 @@
 */
 
 Route::get('/', function () {
-    // $a = new App\teste\classe();
-    // //return view('welcome');
+    //$a = new App\Services\StudentAuditProcess();
 
-    // $a->teste1();
+    //return $a->index();
+    return view('welcome');
 });
 
 Route::get('/report/universityDegree/web', 'AuditUniversityDegreePrintController@universityDegreeWeb');
-Route::get('/valida-diploma','StudentValidateDegree@show')->name('degree');
+Route::get('/valida-diploma', 'StudentValidateDegree@show')->name('degree');
