@@ -11,37 +11,19 @@ use App\Erros;
 use DB;
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         // Return students list with paginate
         return $students = Student::paginate(10);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function store(StudentRequest $request)
     {
         // Returnt all request
         return $request->all();
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         // Find students by ids
@@ -60,15 +42,7 @@ class StudentController extends Controller
             ], 404);
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
          // Find students by ids
@@ -83,17 +57,6 @@ class StudentController extends Controller
             // Return error messages
         }
         return response()->json('Houve um erro ao atualizar o estudante.', 404);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
     }
 
     public function auditStudents()
@@ -197,10 +160,15 @@ class StudentController extends Controller
     {
 
         try {
-            $data = DB::select('SELECT
-                                    p.user_id, t.name, count(p.user_id) as "numeros de processos"
-                                FROM audit_processes p
-                                JOIN user_temp t on t.id = p.user_id
+            $data = DB::select('SELECT 
+                                    p.user_id,
+                                    t.name,
+                                    s.id student_id,
+                                    s.academic_register,
+                                    COUNT(p.user_id) AS "numeros de processos"
+                                FROM sou_audit.audit_processes p
+                                JOIN sou_audit.user_temp t ON t.id = p.user_id
+                                LEFT JOIN sou_authentication.students s ON s.id = p.student_id
                                 GROUP BY p.user_id');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
@@ -214,7 +182,7 @@ class StudentController extends Controller
 
     }
 
-    public function dataPersonalStudents($id_students)
+    public function dataPersonalStudents($academic_register)
     {
 
         try {
@@ -290,7 +258,7 @@ class StudentController extends Controller
                                             JOIN sou_authentication.parentages p ON sp.parentage_id = p.id
                                             WHERE p.parentage_type_id = 2
                                     ) p ON p.student_id = s.id
-                                    where s.id = ' . $id_students);
+                                    where s.academic_register = ' . $academic_register);
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -379,10 +347,10 @@ class StudentController extends Controller
         }
     }
 
-    public function ticketData($student_id = '')
+    public function ticketData($academic_register = '')
     {
 
-        $student = $student_id ? " WHERE s.id = {$student_id}" : '';
+        $academic_register = $academic_register ? " WHERE s.academic_register = {$academic_register}" : '';
 
         try {
             $data = DB::select('SELECT
@@ -399,7 +367,7 @@ class StudentController extends Controller
                                 JOIN sou_authentication.locations l ON c.location_id = l.id
                                 JOIN sou_authentication.courses co ON co.id = c.course_id
                                 JOIN sou_audit.university_degree_lists lu ON lu.student_id = s.id
-                                '. $student);
+                                '. $academic_register);
 
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
