@@ -28,9 +28,9 @@ class AddressRequest extends FormRequest
             'street' => 'max:100',
             'street_number' => 'Integer|min:1',
             'street_type' => 'max:100',
-            'zipcode' => '',
-            'street_complement' => '|max:100',
-            'state' => '|max:100',
+            //'zipcode' => '',
+            'street_complement' => 'max:100',
+            'state' => 'max:100',
         ];
     }
 }
