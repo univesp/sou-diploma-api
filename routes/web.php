@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +13,6 @@
 */
 
 Route::get('/', function () {
-    //$a = new App\Services\StudentAuditProcess();
-
-    //return $a->index();
     return view('welcome');
 });
 

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\StudentRequest;
 use App\ModelsAuthentication\Student;
-use DB;
+use App\Services\StudentAuditProcess;
 
 class StudentController extends Controller
 {
@@ -71,6 +72,10 @@ class StudentController extends Controller
     {
         // Find students by ids
         $students = Student::find($id);
+        //instance a class with two parameter
+        $ServiceStudent = new StudentAuditProcess($request->all(), $students);
+        // function that saves the field being updated.
+        $ServiceStudent->storeSouAudit();
 
         // Validation if students exists
         if ($students) {
