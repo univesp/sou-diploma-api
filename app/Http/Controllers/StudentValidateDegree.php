@@ -21,7 +21,7 @@ class StudentValidateDegree extends Controller
         $ra = $temp[0];
         $class = $request->query('turma');
 
-        $data = DB::connection('mysql_sa')->select('select * from v_print_list_temp where ra = :ra and class_id = :class_id', ['ra' => $ra, 'class_id' => $class]);
+        $data = DB::connection('mysql')->select('select * from print_list_temp where ra = :ra and class_id = :class_id', ['ra' => $ra, 'class_id' => $class]);
 
         return view('degree.degree', compact('data'));
     }
