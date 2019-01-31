@@ -64,18 +64,21 @@ class IdentityController extends Controller
     //esse updade precisa do id do identity
     public function update(IdentityRequest $request, $id)
     {
+        // Find identity by id
         $identity = Identity::find($id);
 
         $identityType = IdentityType::find($identity->identity_type_id);
 
         if ($identity) {
-            $identity->update($request->all());
-
-            $return = ['data' => ['success' => 'documento atualizado com sucesso!'], 200];
+            // Update al request of identity
+            $return = ['data' => ['status' => true, 'msg' => 'Documento atualizado com sucesso.'], 200];
 
             return response()->json($return);
         } else {
-            return response()->json('Houve um erro ao realizar operação de atualizar', 404);
+            // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o Documento.'], 404];
+
+            return response()->json($return);
         }
     }
 

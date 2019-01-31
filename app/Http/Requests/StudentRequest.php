@@ -24,9 +24,9 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:3|max:100',
+            'name' => 'min:3|max:100',
             'last_name' => 'max:100',
-            'cpf' => 'required|min:11|max:20',
+            'cpf' => 'min:11|max:20',
         ];
     }
 }
