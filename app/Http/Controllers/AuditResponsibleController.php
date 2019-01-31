@@ -26,12 +26,12 @@ class AuditResponsibleController extends Controller
         ]);
 
         //verify if student is already atributted to some analyst
-        $studentId = AuditProcess::where('academic_register', $request->student_id)->first();
+        $studentId = AuditProcess::where('academic_register', $request->academic_register)->first();
 
         //if yes, so the register is updated and a hystory is recorded on audit_responsible
         if (!empty($studentId)) {
 
-            $auditHistory = AuditProcess::where('academic_register', $request->student_id)->first();
+            $auditHistory = AuditProcess::where('academic_register', $request->academic_register)->first();
 
             AuditResponsible::create([
                 'audit_process_id' => $auditHistory->id,
@@ -40,9 +40,31 @@ class AuditResponsibleController extends Controller
                 'attributed_date' => date('Y-m-d H:i:s', strtotime($auditHistory->attributed_date))
             ]);
 
+            //
+            $lastRegister = DB::table('audit_responsibles')
+                ->select('user_id')
+                ->latest()
+                ->take(1)
+                ->get();
+
+            $lastResgisterArr = $lastRegister->toArray();
+            $result = $lastResgisterArr[0]->user_id;
+
+            $decProccess = DB::table('user_temp')
+                ->where('id', '=', $result)
+                ->take(1)
+                ->get();
+
+            $decProccessArr = $decProccess->toArray();
+            $resultDec = $decProccessArr[0]->processes - 1;
+
+            $dec = UserTemp::find($lastResgisterArr[0]->user_id);
+            $dec->processes = $resultDec;
+            $dec->save();
+
             $updateProccess = AuditProcess::find($studentId->id);
             $updateProccess->user_id = $request->id;
-            $updateProccess->academic_register = $request->student_id;
+            $updateProccess->academic_register = $request->academic_register;
             $updateProccess->audit_type_id = 3;
             $updateProccess->status = "EM ANDAMENTO";
             $updateProccess->attributed_date = date('Y-m-d H:i:s');
@@ -53,11 +75,11 @@ class AuditResponsibleController extends Controller
 
         } else {
             //if no, so a new register is recorded on audit_processes
-
             $auditProcess = new AuditProcess();
             $auditProcess->user_id = $request->id;
             $auditProcess->audit_type_status_id = 2;
-            $auditProcess->academic_register = $request->student_id;
+            $auditProcess->academic_register = $request->academic_register;
+            $auditProcess->student_id = $request->student_id;
             $auditProcess->audit_type_id = 3;
             $auditProcess->status = "EM ANDAMENTO";
             $auditProcess->attributed_date = date('Y-m-d H:i:s');
