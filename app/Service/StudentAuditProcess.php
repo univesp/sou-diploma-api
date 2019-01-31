@@ -50,9 +50,9 @@ class StudentAuditProcess
         }
     }
 
+    // process is getting the id of the audit processes table
     public function storeSouAudit()
     {
-        // process is getting the id of the audit processes table
         $process = AuditProcess::where('academic_register', $this->students['academic_register'])->get(['id']);
 
         $processAudit = ItemAuditProcess::create([

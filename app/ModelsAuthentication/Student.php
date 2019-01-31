@@ -12,7 +12,7 @@ class Student extends Model
 
     public function identities()
     {
-        return $this->belongsToMany(Identity::class, 'student_x_identify')->withTimestamps();
+        return $this->belongsToMany(Identity::class, 'student_x_identify', 'student_id', 'identity_id')->withTimestamps();
     }
 
     public function emails()
