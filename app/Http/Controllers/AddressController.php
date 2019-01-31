@@ -48,7 +48,7 @@ class AddressController extends Controller
             // Return address by students
             return $address = Address::find($students->address_id);
         } else {
-            // Return error messages 
+            // Return error messages
             return response()->json([
                 'errors' => [
                 'message' => 'Endereço não encontrado.',
@@ -79,11 +79,14 @@ class AddressController extends Controller
             $address->update($request->all());
 
             // Return success messages
-            $return = ['data' => ['success' => 'Endereço atualizado com sucesso!.'], 200];
+            $return = ['data' => ['status' => true, 'msg' => 'Endereço atualizado com sucesso.'], 200];
+
             return response()->json($return);
         } else {
             // Return error messages
-            return response()->json('Houve um erro ao atualizar o endereço', 404);
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o Endereço.'], 404];
+
+            return response()->json($return);
         }
     }
 
@@ -96,6 +99,5 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-  
     }
 }
