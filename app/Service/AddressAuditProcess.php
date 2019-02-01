@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\AuditProcess;
 use App\Models\ItemAuditProcess;
 
-class AddressAuditProcess implements InterFaceAuditProcess
+class AddressAuditProcess
 {
     private $request;
     private $students;

@@ -76,7 +76,7 @@ class IdentityController extends Controller
         $ServiceIdentity = new IdentityAuditProcess($request->all(), $students, $identity);
 
         // // function that saves the field being updated.
-        //$ServiceIdentity->storeSouAudit();
+        $ServiceIdentity->storeSouAudit();
 
         if ($identity) {
             $identity->update($request->all());

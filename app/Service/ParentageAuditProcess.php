@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class ParentageAuditProcess implements InterFaceAuditProcess
+class ParentageAuditProcess
 {
     public function __construct($request, $students)
     {

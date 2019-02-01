@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class EmailAuditProcess implements InterFaceAuditProcess
+class EmailAuditProcess
 {
     public function __construct($request, $students)
     {
