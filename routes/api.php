@@ -19,8 +19,11 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    'parentages' => 'ParentageController',
+    //'parentages' => 'ParentageController',
 ]);
+
+Route::patch('parentages/{id}/{type}', 'ParentageController@update');
+Route::get('parentages/{id}', 'ParentageController@show');
 
 //Route to save and update data to sou_audit / audit_proccess
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
@@ -34,7 +37,7 @@ Route::get('prints/all', 'PrintListTempController@getStudentsDegreePrint');
 Route::get('report/pdf', 'AuditUniversityDegreePrintController@ReportPdf');
 
 //essa rota precisa do tipo 1 mãe , 2 pai
-Route::put('parentages/{id}/{type}','ParentageController@update');
+Route::put('parentages/{id}/{type}', 'ParentageController@update');
 
 // Eduardo Oliveira
 // Authentication
