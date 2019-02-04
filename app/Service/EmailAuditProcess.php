@@ -4,11 +4,13 @@ namespace App\Services;
 
 class EmailAuditProcess
 {
-    public function __construct($request, $students)
+    private $request;
+    private $emails;
+
+    public function __construct($request, $emails)
     {
-        dd($this->request = $request);
         $this->request = $request;
-        $this->students = $students;
+        $this->emails = $emails;
     }
 
     // process is getting the id of the audit processes table

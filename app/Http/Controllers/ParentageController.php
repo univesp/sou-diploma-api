@@ -62,15 +62,17 @@ class ParentageController extends Controller
      */
     public function update(ParentageRequest $request, $id, $type)
     {
+        //verification type
         if ($type >= 1 && $type <= 2) {
+            // id student
             $students = Student::find($id);
-
+            //how id of student this idParentage variable searches the database for the specific Parentage id
             $idParentage = $students->parentages->where('parentage_type_id', $type)->first()->id;
-
+            //id related to studying
             $parentage = Parentage::find($idParentage);
-
+            //instance a class with two parameter
             $ServiceParentage = new ParentageAuditProcess($request->all(), $students, $parentage);
-
+            // function that saves the field being updated.
             $ServiceParentage->storeSouAudit();
 
             if ($type = 1) {

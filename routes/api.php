@@ -19,7 +19,7 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    //'parentages' => 'ParentageController',
+    'emails' => 'EmailController',
 ]);
 
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
