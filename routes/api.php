@@ -19,11 +19,12 @@ Route::resources([
     'students' => 'StudentController',
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
-    'emails' => 'EmailController',
 ]);
 
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
 Route::get('parentages/{id}', 'ParentageController@show');
+Route::get('emails/{id}', 'EmailController@show');
+Route::patch('emails/{id}/{type}', 'EmailController@update');
 
 //Route to save and update data to sou_audit / audit_proccess
 Route::post('responsible-process', 'AuditResponsibleController@responsibleProcess');
