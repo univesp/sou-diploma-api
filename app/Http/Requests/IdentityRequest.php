@@ -24,7 +24,7 @@ class IdentityRequest extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'required|min:12',
+            'number' => 'min:12',
         ];
     }
 }

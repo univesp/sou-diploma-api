@@ -17,6 +17,12 @@ class Identity extends Model
     public function identityTypes()
     {
         //return $this->belongsToMany(Identity::class, 'student_x_identify')->withTimestamps();
-        return $this->belongsTo(Identity::class,'identity_type_id')->withTimestamps();
+        return $this->belongsTo(Identity::class, 'identity_type_id')->withTimestamps();
+    }
+
+    // Logic Bussiness
+    public function getTableColumns()
+    {
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 }

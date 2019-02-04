@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\ModelsAuthentication\Student;
 use App\Http\Requests\IdentityRequest;
 use App\ModelsAuthentication\Identity;
-use App\ModelsAuthentication\IdentityType;
+use App\Services\IdentityAuditProcess;
 
 class IdentityController extends Controller
 {
@@ -39,10 +40,10 @@ class IdentityController extends Controller
      */
     public function show($id)
     {
-        $identity = Identity::find($id);
+        $students = Student::find($id);
 
-        if ($identity) {
-            return $identity = Identity::find($id);
+        if ($students) {
+            return $students->identities->where('identity_type_id', 1);
         } else {
             return response()->json([
                 'errors' => [
@@ -65,11 +66,21 @@ class IdentityController extends Controller
     public function update(IdentityRequest $request, $id)
     {
         // Find identity by id
-        $identity = Identity::find($id);
+        $students = Student::find($id);
 
-        $identityType = IdentityType::find($identity->identity_type_id);
+        //$students->identities->where('identity_type_id', 1)->first()->id
+        //this line has the id Identity specific to update the title of elected
+        $identity = Identity::find($students->identities->where('identity_type_id', 1)->first()->id);
+
+        //instance a class with two parameter
+        $ServiceIdentity = new IdentityAuditProcess($request->all(), $students, $identity);
+
+        // // function that saves the field being updated.
+        $ServiceIdentity->storeSouAudit();
 
         if ($identity) {
+            $identity->update($request->all());
+
             // Update al request of identity
             $return = ['data' => ['status' => true, 'msg' => 'Documento atualizado com sucesso.'], 200];
 

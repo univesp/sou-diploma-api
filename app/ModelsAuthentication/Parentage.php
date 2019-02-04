@@ -18,4 +18,10 @@ class Parentage extends Model
     {
         return $this->belongsTo(Parentage::class, 'parentage_type_id')->withTimestamps();
     }
+
+    // Logic Bussiness
+    public function getTableColumns()
+    {
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+    }
 }
