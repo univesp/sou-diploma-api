@@ -42,6 +42,7 @@ Route::put('parentages/{id}/{type}', 'ParentageController@update');
 // Eduardo Oliveira
 // Authentication
 Route::get('/v_auditados', 'StudentController@auditStudents');
+Route::get('/v_diplomados', 'StudentController@degreeStudents');
 Route::get('/v_geral', 'StudentController@reserchStudents');
 Route::get('/v_em_aberto', 'StudentController@openedStudents');
 Route::get('/v_atribuidos', 'StudentController@attributedStudents');
