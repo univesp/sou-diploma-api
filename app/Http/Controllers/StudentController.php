@@ -96,7 +96,40 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos os dados da API de alunos auditados.', 200);
+            return response('Não encontramos os dados da API de alunos auditados.', 404);
+        }
+    }
+    
+    public function degreeStudents()
+    {
+        try {
+            $data = DB::select('SELECT 
+                                    p.id AS process_id,
+                                    s.id AS student_id,
+                                    s.academic_register AS ra_student,
+                                    s.name AS student_name,
+                                    (CASE p.status WHEN "AUDITADO" THEN "1"
+                                    END) AS proc_status,
+                                    p.status AS status,
+                                    co.id AS course_id,
+                                    co.name AS course_name,
+                                    c.year_entry,
+                                    YEAR(l.date_conclusion) AS year_conclusion,
+                                    p.user_id
+                                FROM sou_audit.audit_processes p
+                                JOIN sou_audit.university_degree_lists l ON p.student_id = l.student_id
+                                JOIN sou_authentication.students s ON s.id = p.student_id
+                                JOIN sou_authentication.classes c ON s.class_id = c.id
+                                JOIN sou_authentication.courses co ON co.id = c.course_id
+                                WHERE p.status = "1"');
+        } catch (\Exception $ex) {
+            return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
+        }
+
+        if (!empty($data)) {
+            return response($data, 200);
+        } else {
+            return response('Não encontramos os dados da API de alunos diplomados.', 404);
         }
     }
 
@@ -121,7 +154,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos os dados da API de Cursos.', 200);
+            return response('Não encontramos os dados da API de Cursos.', 404);
         }
     }
 
@@ -157,7 +190,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos os dados da API de Cursos em Aberto.', 200);
+            return response('Não encontramos os dados da API de Cursos em Aberto.', 404);
         }
     }
 
@@ -181,7 +214,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos alunos atribuidos.', 200);
+            return response('Não encontramos alunos atribuidos.', 404);
         }
     }
 
@@ -269,7 +302,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos os dado pessoal do aluno.', 200);
+            return response('Não encontramos os dado pessoal do aluno.', 404);
         }
     }
 
@@ -291,7 +324,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos o orgão emissor do alunos.', 200);
+            return response('Não encontramos o orgão emissor do alunos.', 404);
         }
     }
 
@@ -313,13 +346,13 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos as nacionalidades do alunos.', 200);
+            return response('Não encontramos as nacionalidades do alunos.', 404);
         }
     }
 
     public function retained()
     {
-        try {
+    try {
             $data = DB::select('SELECT
                                     p.id AS process_id,
                                     s.id AS student_id,
@@ -345,7 +378,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos alunos retidos.', 200);
+            return response('Não encontramos alunos retidos.', 404);
         }
     }
 
@@ -377,7 +410,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos alunos ingressados.', 200);
+            return response('Não encontramos alunos ingressados.', 404);
         }
     }
 
@@ -398,7 +431,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos as cidades.', 200);
+            return response('Não encontramos as cidades.', 404);
         }
     }
 
@@ -419,7 +452,7 @@ class StudentController extends Controller
         if (!empty($data)) {
             return response($data, 200);
         } else {
-            return response('Não encontramos os estados.', 200);
+            return response('Não encontramos os estados.', 404);
         }
     }
 }
