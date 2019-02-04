@@ -24,13 +24,13 @@ class AddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'neighborhood' => 'required|max:100',
-            'street' => 'required|max:100',
-            'street_number' => 'required|Integer|min:1',
+            'neighborhood' => 'max:100',
+            'street' => 'max:100',
+            'street_number' => 'Integer|min:1',
             'street_type' => 'max:100',
-            'zipcode' => 'required',
-            'street_complement' => 'required|max:100',
-            'state' => 'required|max:100',
+            //'zipcode' => '',
+            'street_complement' => 'max:100',
+            'state' => 'max:100',
         ];
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\ModelsAuthentication\Student;
 use App\Http\Requests\ParentageRequest;
 use App\ModelsAuthentication\Parentage;
+use App\Services\ParentageAuditProcess;
 
 class ParentageController extends Controller
 {
@@ -38,10 +40,13 @@ class ParentageController extends Controller
      */
     public function show($id)
     {
-        $parentage = Parentage::where('gender', $id)->get();
+        $students = Student::find($id);
 
-        if ($parentage) {
-            return response()->json($parentage);
+        $students->parentages->where('parentage_type_id');
+        //$parentage = Parentage::where('gender', $id)->get();
+
+        if ($students) {
+            return response()->json($students);
         } else {
             return response()->json(['errors' => ['message' => 'Não realizar esse operação']], 404);
         }
@@ -55,31 +60,35 @@ class ParentageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(ParentageRequest $request, $id)
+    public function update(ParentageRequest $request, $id, $type)
     {
-        // para atualizar o nomes do pais, você vai precisa dos ids de cada uma deles no metédo show passando o id do stuand você vai ter como o resultado o id do pai e mãe associado a o estudante.
-        $parentage = Parentage::find($id);
-        // Find Parentage by id
-        if ($parentage) {
-            //check parentage_type_id
-            if ($parentage->parentage_type_id == 1) {
-                // Update all request of mom
+        //verification type
+        if ($type >= 1 && $type <= 2) {
+            // id student
+            $students = Student::find($id);
+            //how id of student this idParentage variable searches the database for the specific Parentage id
+            $idParentage = $students->parentages->where('parentage_type_id', $type)->first()->id;
+            //id related to studying
+            $parentage = Parentage::find($idParentage);
+            //instance a class with two parameter
+            $ServiceParentage = new ParentageAuditProcess($request->all(), $students, $parentage);
+            // function that saves the field being updated.
+            $ServiceParentage->storeSouAudit();
+
+            if ($type = 1) {
+                // Update all request.
                 $parentage->update($request->all());
 
-                $return = ['data' => ['status' => true, 'mãe' => 'atualizado com sucesso!'], 200];
+                $return = ['data' => ['status' => true, 'atualizado com sucesso!'], 200];
 
                 return response()->json($return);
             } else {
-                // Update all request of dad
-                $parentage->update($request->all());
-
-                $return = ['data' => ['status' => true, 'pai' => 'atualizado com sucesso!'], 200];
+                $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar.'], 404];
 
                 return response()->json($return);
             }
         } else {
-            // Return error messages
-            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar.'], 404];
+            $return = ['data' => ['status' => false, 'msg' => 'Você precisa fornecer o tipo 1 atualiza a mãe 2 o pai.', 404]];
 
             return response()->json($return);
         }

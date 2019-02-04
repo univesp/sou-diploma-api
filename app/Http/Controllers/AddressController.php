@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AddressRequest;
 use App\ModelsAuthentication\Address;
 use App\ModelsAuthentication\Student;
+use App\Services\AddressAuditProcess;
 
 class AddressController extends Controller
 {
@@ -72,6 +73,11 @@ class AddressController extends Controller
 
         // Find address id by students
         $address = Address::find($students->address_id);
+
+        //instance a class with two parameter
+        $ServiceAddress = new AddressAuditProcess($request->all(), $students, $address);
+
+        $ServiceAddress->storeSouAudit();
 
         // Validation if address exists
         if ($address) {

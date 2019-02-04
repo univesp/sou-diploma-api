@@ -5,24 +5,26 @@ namespace App\Services;
 use App\Models\AuditProcess;
 use App\Models\ItemAuditProcess;
 
-class StudentAuditProcess
+class IdentityAuditProcess
 {
     private $request;
     private $students;
+    private $identity;
 
-    public function __construct($request, $students)
+    public function __construct($request, $students, $identity)
     {
+        $this->identity = $identity;
         $this->request = $request;
         $this->students = $students;
     }
 
     // this check which field is being changed, returns to be saved
-    private function checkFieldName()
+    public function checkFieldName()
     {
         foreach ($this->request as $key => $r) {
-            foreach ($this->students->getTableColumns() as $student) {
-                if ($student === $key) {
-                    return $student;
+            foreach ($this->identity->getTableColumns() as $i) {
+                if ($i === $key) {
+                    return $i;
                 }
             }
         }
@@ -32,9 +34,9 @@ class StudentAuditProcess
     public function checkBefore()
     {
         foreach ($this->request as $key => $r) {
-            foreach ($this->students->toArray() as $keyStudent => $student) {
-                if ($keyStudent === $key) {
-                    foreach ([$keyStudent => $student] as $value) {
+            foreach ($this->identity->toArray() as $keyIdentity => $i) {
+                if ($keyIdentity === $key) {
+                    foreach ([$keyIdentity => $i] as $value) {
                         return $value;
                     }
                 }
