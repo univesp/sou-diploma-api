@@ -20,6 +20,7 @@ Route::resources([
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
 ]);
+Route::post('students/{id}', 'StudentController@storeSouAudit');
 
 // Student's documents
 Route::post('students/document/store/{id}', 'StudentController@storeDocument');
