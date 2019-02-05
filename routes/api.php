@@ -20,6 +20,7 @@ Route::resources([
     'addresses' => 'AddressController',
     'identities' => 'IdentityController',
 ]);
+Route::post('students/{id}', 'StudentController@storeSouAudit');
 
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
 Route::get('parentages/{id}', 'ParentageController@show');

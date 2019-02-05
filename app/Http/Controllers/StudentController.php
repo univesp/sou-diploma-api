@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\Models\AuditProcess;
 use Illuminate\Http\Request;
+use App\Models\ItemAuditProcess;
 use App\Http\Requests\StudentRequest;
 use App\ModelsAuthentication\Student;
 use App\Services\StudentAuditProcess;
 
 class StudentController extends Controller
 {
-   
     public function index()
     {
         // Return students list with paginate
@@ -19,10 +20,8 @@ class StudentController extends Controller
 
     public function store(StudentRequest $request)
     {
-        // Returnt all request
-        return $request->all();
     }
-    
+
     public function show($id)
     {
         // Find students by ids
@@ -41,7 +40,7 @@ class StudentController extends Controller
             ], 404);
         }
     }
-  
+
     public function update(StudentRequest $request, $id)
     {
         // Find students by ids
@@ -65,6 +64,22 @@ class StudentController extends Controller
             $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o estudante.'], 404];
 
             return response()->json($return);
+        }
+    }
+
+    // inserir dados de ingresso sou_audit
+    public function storeSouAudit(StudentRequest $request, $id)
+    {
+        foreach ($request->all() as $key => $r) {
+            $process = AuditProcess::where('student_id', $id)->get(['id']);
+
+            $processAudit = ItemAuditProcess::create([
+                    'audit_process_id' => $process[0]->id,
+                    'user_id' => $id,
+                    'field_name' => $key,
+                    'before' => $r,
+                    'inconsistency' => 1,
+                ]);
         }
     }
 
@@ -99,7 +114,7 @@ class StudentController extends Controller
             return response('Não encontramos os dados da API de alunos auditados.', 404);
         }
     }
-    
+
     public function degreeStudents()
     {
         try {
@@ -293,8 +308,7 @@ class StudentController extends Controller
                                             JOIN sou_authentication.parentages p ON sp.parentage_id = p.id
                                             WHERE p.parentage_type_id = 2
                                     ) p ON p.student_id = s.id
-                                    where s.academic_register = ' . $academic_register);
-
+                                    where s.academic_register = '.$academic_register);
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -352,7 +366,7 @@ class StudentController extends Controller
 
     public function retained()
     {
-    try {
+        try {
             $data = DB::select('SELECT
                                     p.id AS process_id,
                                     s.id AS student_id,
@@ -384,7 +398,6 @@ class StudentController extends Controller
 
     public function ticketData($academic_register = '')
     {
-
         $academic_register = $academic_register ? " WHERE s.academic_register = {$academic_register}" : '';
 
         try {
@@ -402,7 +415,7 @@ class StudentController extends Controller
                                 JOIN sou_authentication.locations l ON c.location_id = l.id
                                 JOIN sou_authentication.courses co ON co.id = c.course_id
                                 JOIN sou_audit.university_degree_lists lu ON lu.student_id = s.id
-                                '. $academic_register);
+                                '.$academic_register);
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
