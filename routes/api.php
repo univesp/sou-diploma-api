@@ -22,6 +22,10 @@ Route::resources([
 ]);
 Route::post('students/{id}', 'StudentController@storeSouAudit');
 
+// Student's documents
+Route::post('students/document/store/{id}', 'StudentController@storeDocument');
+Route::post('students/document/update/{id}', 'StudentController@updateDocument');
+
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
 Route::get('parentages/{id}', 'ParentageController@show');
 Route::get('emails/{id}', 'EmailController@show');
@@ -56,4 +60,4 @@ Route::get('/v_dados_ingressos/{academic_register?}', 'StudentController@ticketD
 Route::get('/v_cidade/{id?}', 'StudentController@city');
 Route::get('/v_estados/{id?}', 'StudentController@states');
 
-Route::get('/valida-lei-curso/{curso_id}', 'StudentCourseController@verifyLows');
+Route::get('/valida-lei-curso/{curso_id}', 'StudentCourseController@verifyLaws');
