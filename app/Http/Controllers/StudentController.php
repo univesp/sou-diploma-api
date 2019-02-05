@@ -260,12 +260,13 @@ class StudentController extends Controller
                                     s.id AS student_id,
                                     s.name,
                                     s.gender,
-                                    date_format(s.birth_date, "%d/%c/%Y") AS birth_date,
+                                    date_format(s.birth_date, "%d/%m/%Y") AS birth_date,
                                     s.academic_register AS academic_register,
-                                    ifnull(ap.status, 0) AS proc_status,
+                                    ts.id AS proc_status,
                                     lo.name AS polo,
                                     concat(c.year_entry, ".", c.semester) AS year_entry,
-																		date_format(l.date_conclusion, "%d/%c/%Y") AS year_conclusion,
+                                    date_format(l.date_conclusion, "%d/%m/%Y") AS year_conclusion,
+                                    date_format(ap.attributed_date, "%d/%m/%Y") AS data_atribuicao,
                                     concat(YEAR(l.date_conclusion), ".",
                                     IF((MONTH(l.date_conclusion) <= 6), "1","2") ) AS semester_conclusion,
                                     ap.user_id AS user_id
@@ -275,7 +276,8 @@ class StudentController extends Controller
 								JOIN sou_authentication.courses co     ON co.id = c.course_id
 			                    JOIN sou_authentication.locations lo   ON lo.id = c.location_id
 				                LEFT JOIN sou_audit.audit_processes ap ON ap.academic_register = s.academic_register
-                                WHERE l.status = 0  OR ap.status = "ABERTO"');
+                                JOIN sou_audit.type_status ts          ON ts.id = ap.audit_type_status_id
+                                WHERE l.status = 0  OR ts.id = 0');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
@@ -333,6 +335,7 @@ class StudentController extends Controller
                                     ad.neighborhood,
                                     m.name AS mothers_name,
                                     p.name AS fathers_name,
+                                    d.attachment as rg,
                                     (SELECT sou_authentication.identities.id
                                         FROM sou_authentication.identities
                                         JOIN sou_authentication.student_x_identify ON sou_authentication.identities.id = sou_authentication.student_x_identify.identity_id
@@ -376,6 +379,9 @@ class StudentController extends Controller
                                     FROM sou_authentication.students s
                                     JOIN sou_authentication.addresses ad ON ad.id = s.address_id
                                     LEFT JOIN sou_authentication.cities c ON s.city_id = c.id
+                                    JOIN sou_audit.university_degree_lists dl ON dl.student_id = s.id
+                                    JOIN sou_audit.audit_processes pr ON dl.student_id = pr.student_id 
+                                    JOIN sou_audit.audit_documents d ON  d.audit_process_id = pr.id
                                     JOIN (SELECT sp.student_id,p.name
                                             FROM sou_authentication.student_x_parentage sp
                                             JOIN sou_authentication.parentages p ON sp.parentage_id = p.id
@@ -487,9 +493,9 @@ class StudentController extends Controller
                                     "Graduação" AS nivel,
                                     l.name AS polo,
                                     c.year_entry,
-                                    date_format(lu.date_conclusion, "%d/%c/%Y") AS date_conclusion,
+                                    date_format(lu.date_conclusion, "%d/%m/%Y") AS date_conclusion,
                                     "Graduado" AS grau_conferido,
-                                    date_format(lu.date_collation, "%d/%c/%Y") AS date_collation
+                                    date_format(lu.date_collation, "%d/%m/%Y") AS date_collation
                                 FROM sou_authentication.students s
                                 JOIN sou_authentication.classes c ON s.class_id = c.id
                                 JOIN sou_authentication.locations l ON c.location_id = l.id
