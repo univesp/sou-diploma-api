@@ -21,6 +21,9 @@ Route::resources([
     'identities' => 'IdentityController',
 ]);
 
+// Student's documents
+Route::post('students/document/{id}', 'StudentController@storeDocument');
+
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
 Route::get('parentages/{id}', 'ParentageController@show');
 Route::get('emails/{id}', 'EmailController@show');
