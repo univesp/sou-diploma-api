@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StudentRequest;
 use App\ModelsAuthentication\Student;
 use App\Services\StudentAuditProcess;
+use Illuminate\Support\Facades\Input;
+use App\Models\AuditProcess as AuditProcess;
+use App\Models\DocumentType as DocumentType;
+use App\Models\AuditDocument as AuditDocument;
 
 class StudentController extends Controller
 {
@@ -19,8 +23,97 @@ class StudentController extends Controller
 
     public function store(StudentRequest $request)
     {
-        // Returnt all request
         return $request->all();
+   
+    }
+
+    public function storeDocument($id, Request $request) {
+        // Send documents to storage
+        $path_attachment = null;
+
+        // Validate if file exist
+        if ($request->hasFile('attachment') && $request->file('attachment')->isValid()) {
+            $file = Input::file('attachment');
+            $fileMimeType = Input::file('attachment')->getMimeType();
+            $fileData = file_get_contents($file);
+            $base64 = base64_encode($fileData);
+            $path_attachment = "data:{$fileMimeType};base64,{$base64}";
+        }
+ 
+        // Find students by ids
+        $student = Student::find($id);
+ 
+        // Find audit process by student id
+        $auditProcess = AuditProcess::where('student_id', $student->id)->first();
+ 
+        // Find document type by id
+        $documentType = DocumentType::where('id', 1)->first();
+ 
+        // Validation if students exists
+        if ($student && $auditProcess && $documentType) {
+ 
+            // Create new audit document
+            $auditDocument = new AuditDocument();
+            $auditDocument->document_type_id = $documentType->id;
+            $auditDocument->audit_process_id = $auditProcess->id;
+            $auditDocument->attachment = $path_attachment;
+ 
+            // Save audit document
+            $auditDocument->save();
+
+            // Return true messages
+            $return = ['data' => ['status' => true, 'msg' => 'Documento agregado com exito!.'], 200];
+            return response()->json($return);
+        } else {
+
+            // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o documento.'], 404];
+            return response()->json($return);
+        }
+    }
+
+    public function updateDocument($id, Request $request) {
+        // Send documents to storage
+        $path_attachment = null;
+
+        // Validate if file exist
+        if ($request->hasFile('attachment') && $request->file('attachment')->isValid()) {
+            $file = Input::file('attachment');
+            $fileMimeType = Input::file('attachment')->getMimeType();
+            $fileData = file_get_contents($file);
+            $base64 = base64_encode($fileData);
+            $path_attachment = "data:{$fileMimeType};base64,{$base64}";
+        }
+ 
+        // Find students by ids
+        $student = Student::find($id);
+ 
+        // Find audit process by student id
+        $auditProcess = AuditProcess::where('student_id', $student->id)->first();
+ 
+        // Find document type by id
+        $documentType = DocumentType::where('id', 1)->first();
+ 
+        // Validation if students exists
+        if ($student && $auditProcess && $documentType) {
+          
+            // Update audit document
+            $auditDocument = AuditDocument::where('audit_process_id', $auditProcess->id)->first();
+            $auditDocument->attachment = $path_attachment;
+       
+            // Update audit document
+            $auditDocument->save();
+
+            // Return true messages
+            $return = ['data' => ['status' => true, 'msg' => 'Documento atualizado com exito!.'], 200];
+            return response()->json($return);
+
+        } else {
+
+            // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o documento.'], 404];
+            return response()->json($return);
+        }
     }
     
     public function show($id)
@@ -57,7 +150,7 @@ class StudentController extends Controller
             $students->update($request->all());
 
             // Return true messages
-            $return = ['data' => ['status' => true, 'msg' => 'estudante atualizado com sucesso.'], 200];
+            $return = ['data' => ['status' => true, 'msg' => 'Estudante atualizado com sucesso.'], 200];
 
             return response()->json($return);
         } else {
