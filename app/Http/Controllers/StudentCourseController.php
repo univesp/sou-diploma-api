@@ -83,7 +83,7 @@ class StudentCourseController extends Controller
         //
     }
 
-    public function verifyLows($curso_id)
+    public function verifyLaws($curso_id)
     {
 
         try {
