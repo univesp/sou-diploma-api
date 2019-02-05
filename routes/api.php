@@ -22,7 +22,8 @@ Route::resources([
 ]);
 
 // Student's documents
-Route::post('students/document/{id}', 'StudentController@storeDocument');
+Route::post('students/document/store/{id}', 'StudentController@storeDocument');
+Route::post('students/document/update/{id}', 'StudentController@updateDocument');
 
 Route::patch('parentages/{id}/{type}', 'ParentageController@update');
 Route::get('parentages/{id}', 'ParentageController@show');

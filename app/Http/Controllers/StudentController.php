@@ -71,6 +71,50 @@ class StudentController extends Controller
             return response()->json($return);
         }
     }
+
+    public function updateDocument($id, Request $request) {
+        // Send documents to storage
+        $path_attachment = null;
+
+        // Validate if file exist
+        if ($request->hasFile('attachment') && $request->file('attachment')->isValid()) {
+            $file = Input::file('attachment');
+            $fileMimeType = Input::file('attachment')->getMimeType();
+            $fileData = file_get_contents($file);
+            $base64 = base64_encode($fileData);
+            $path_attachment = "data:{$fileMimeType};base64,{$base64}";
+        }
+ 
+        // Find students by ids
+        $student = Student::find($id);
+ 
+        // Find audit process by student id
+        $auditProcess = AuditProcess::where('student_id', $student->id)->first();
+ 
+        // Find document type by id
+        $documentType = DocumentType::where('id', 1)->first();
+ 
+        // Validation if students exists
+        if ($student && $auditProcess && $documentType) {
+          
+            // Update audit document
+            $auditDocument = AuditDocument::where('audit_process_id', $auditProcess->id)->first();
+            $auditDocument->attachment = $path_attachment;
+       
+            // Update audit document
+            $auditDocument->save();
+
+            // Return true messages
+            $return = ['data' => ['status' => true, 'msg' => 'Documento atualizado com exito!.'], 200];
+            return response()->json($return);
+
+        } else {
+
+            // Return error messages
+            $return = ['data' => ['status' => false, 'msg' => 'Houve um erro ao atualizar o documento.'], 404];
+            return response()->json($return);
+        }
+    }
     
     public function show($id)
     {
