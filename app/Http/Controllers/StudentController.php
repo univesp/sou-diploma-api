@@ -292,7 +292,7 @@ class StudentController extends Controller
 								JOIN sou_authentication.courses co     ON co.id = c.course_id
 			                    JOIN sou_authentication.locations lo   ON lo.id = c.location_id
 				                LEFT JOIN sou_audit.audit_processes ap ON ap.academic_register = s.academic_register
-                                JOIN sou_audit.type_status ts          ON ts.id = ap.audit_type_status_id
+                                LEFT JOIN sou_audit.type_status ts          ON ts.id = ap.audit_type_status_id
                                 WHERE l.status = 0  OR ts.id = 0');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
@@ -309,7 +309,7 @@ class StudentController extends Controller
     {
         try {
             $data = DB::select('SELECT 
-                                    t.name, t.processes
+                                    *
                                 FROM sou_audit.user_temp t');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
