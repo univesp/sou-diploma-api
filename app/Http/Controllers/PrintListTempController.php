@@ -36,9 +36,7 @@ class PrintListTempController extends Controller
             foreach($erros as $e){
                 $errors['errors'][] = $e;
             }
-        }
-
-        dd($errors);
+        }        
 
         $printStatus = PrintListTemp::whereIn('RA', $request->ras)->get();
 
@@ -60,8 +58,13 @@ class PrintListTempController extends Controller
 
     public function getStudentsDegreePrint()
     {
-        $studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
-
+		
+        //$studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
+		$studentsDegree = DB::select('SELECT u.*
+										FROM sou_audit.university_degree_prints u
+										INNER JOIN sou_audit.print_list_temp t ON t.id_legacy = u.id_legacy
+										GROUP BY 1');
+										
         return response()->json($studentsDegree);
 
     }
