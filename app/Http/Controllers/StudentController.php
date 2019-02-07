@@ -309,15 +309,8 @@ class StudentController extends Controller
     {
         try {
             $data = DB::select('SELECT 
-                                    p.user_id,
-                                    t.name,
-                                    s.id student_id,
-                                    s.academic_register,
-                                    COUNT(p.user_id) AS "numeros de processos"
-                                FROM sou_audit.audit_processes p
-                                JOIN sou_audit.user_temp t ON t.id = p.user_id
-                                LEFT JOIN sou_authentication.students s ON s.id = p.student_id
-                                GROUP BY p.user_id');
+                                    t.name, t.processes
+                                FROM sou_audit.user_temp t');
         } catch (\Exception $ex) {
             return response(["Erro interno na Base de Dados: [{$ex->getMessage()}]"], 500);
         }
