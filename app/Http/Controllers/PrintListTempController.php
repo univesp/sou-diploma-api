@@ -59,8 +59,7 @@ class PrintListTempController extends Controller
     public function getStudentsDegreePrint()
     {
 		
-        //$studentsDegree = DB::connection('mysql_sa')->table('v_print_list_temp')->get();
-		$studentsDegree = DB::select('SELECT u.*
+		$studentsDegree = DB::select('SELECT t.*
 										FROM sou_audit.university_degree_prints u
 										INNER JOIN sou_audit.print_list_temp t ON t.id_legacy = u.id_legacy
 										GROUP BY 1');
